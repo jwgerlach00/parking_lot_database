@@ -24,6 +24,15 @@ CREATE TABLE ParkingLots (
 	PRIMARY KEY(name, address)
 );
 
+CREATE TABLE Zones (
+	zoneID CHAR(2),
+	parkingLotName VARCHAR(128),
+	parkingLotAddress VARCHAR(128),
+	PRIMARY KEY(zoneID, parkingLotName, parkingLotAddress),
+	FOREIGN KEY(parkingLotName, parkingLotAddress) REFERENCES ParkingLots(name, address) ON UPDATE CASCADE,
+	CHECK (zoneID IN ('A', 'B', 'C', 'D', 'AS', 'BS', 'CS', 'DS', 'V'))
+);
+
 CREATE TABLE Spaces (
 	spaceNum INT,
 	parkingLotName VARCHAR(128),
@@ -32,17 +41,9 @@ CREATE TABLE Spaces (
 	spaceType VARCHAR(11) NOT NULL DEFAULT 'Regular',
 	availabilityStatus BOOLEAN NOT NULL,
 	PRIMARY KEY(spaceNum, parkingLotName, parkingLotAddress),
-	FOREIGN KEY(parkingLotName, parkingLotAddress) REFERENCES parkingLots(name, address) ON UPDATE CASCADE,
-	CHECK (spaceType IN ('Electric', 'Handicap', 'Compact Car', 'Regular'))
-);
-
-CREATE TABLE Zones (
-	zoneID CHAR(2),
-	parkingLotName VARCHAR(128),
-	parkingLotAddress VARCHAR(128),
-	PRIMARY KEY(zoneID, parkingLotName, parkingLotAddress),
 	FOREIGN KEY(parkingLotName, parkingLotAddress) REFERENCES ParkingLots(name, address) ON UPDATE CASCADE,
-	CHECK (zoneID IN ('A', 'B', 'C', 'D', 'AS', 'BS', 'CS', 'DS', 'V'))
+    FOREIGN KEY(zoneID, parkingLotName, parkingLotAddress) REFERENCES Zones(zoneID, parkingLotName, parkingLotAddress) ON UPDATE CASCADE,
+	CHECK (spaceType IN ('Electric', 'Handicap', 'Compact Car', 'Regular'))
 );
 
 CREATE TABLE Permits (
