@@ -1,0 +1,5 @@
+UPDATE Drivers
+SET status='PLACEHOLDER',
+	name='PLACEHOLDER',
+    id='PLACEHOLDER'
+WHERE id='300202020';
