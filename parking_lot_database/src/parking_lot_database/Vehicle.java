@@ -8,10 +8,10 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class Vehicle {
-    private static final String ADD_VEHICLE_SQL_FILE = "/sql/maintaining_permits_and_vehicle_info/add_vehicle.sql";
-    private static final String REMOVE_VEHICLE_SQL_FILE = "/sql/maintaining_permits_and_vehicle_info/remove_vehicle.sql";
-    private static final String UPDATE_VEHICLE_OWNERSHIP_INFO_SQL_FILE = "/sql/maintaining_permits_and_vehicle_info/update_vehicle_ownership_info.sql";
-    private static final String ENTER_VEHICLE_OWNERSHIP_INFO_SQL_FILE = "/sql/maintaining_permits_and_vehicle_info/enter_vehicle_ownership_info.sql";
+    private static final String ADD_VEHICLE_SQL_FILE = "/resources/maintaining_permits_and_vehicle_info/add_vehicle.sql";
+    private static final String REMOVE_VEHICLE_SQL_FILE = "/resources/maintaining_permits_and_vehicle_info/remove_vehicle.sql";
+    private static final String UPDATE_VEHICLE_OWNERSHIP_INFO_SQL_FILE = "/resources/maintaining_permits_and_vehicle_info/update_vehicle_ownership_info.sql";
+    private static final String ENTER_VEHICLE_OWNERSHIP_INFO_SQL_FILE = "/resources/maintaining_permits_and_vehicle_info/enter_vehicle_ownership_info.sql";
 
 
 
@@ -32,8 +32,9 @@ public class Vehicle {
     }
 
     private boolean executeUpdateOperation(String sqlFilePath, Object... params) {
-        try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement preparedStatement = getPreparedStatement(connection, sqlFilePath)) {
+        try {
+        	Connection connection = ParkingLotDB.initializeDatabase();
+            PreparedStatement preparedStatement = getPreparedStatement(connection, sqlFilePath);
 
             // Set parameters and execute SQL
             for (int i = 0; i < params.length; i++) {

@@ -8,15 +8,16 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class PermitAssignment {
-    private static final String ASSIGN_PERMIT_TO_DRIVERS_SQL_FILE = "/sql/maintaining_permits_and_vehicle_info/assign_permit_to_drivers.sql";
+    private static final String ASSIGN_PERMIT_TO_DRIVERS_SQL_FILE = "/resources/maintaining_permits_and_vehicle_info/assign_permit_to_drivers.sql";
 
     public boolean assignPermitToDrivers(String driverID, String permitID) {
         return executeUpdateOperation(ASSIGN_PERMIT_TO_DRIVERS_SQL_FILE, driverID, permitID);
     }
 
     private boolean executeUpdateOperation(String sqlFilePath, Object... params) {
-        try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement preparedStatement = getPreparedStatement(connection, sqlFilePath)) {
+        try {
+        	Connection connection = ParkingLotDB.initializeDatabase();
+            PreparedStatement preparedStatement = getPreparedStatement(connection, sqlFilePath);
 
             // Set parameters and execute SQL
             for (int i = 0; i < params.length; i++) {

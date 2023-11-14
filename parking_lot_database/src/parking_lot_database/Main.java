@@ -6,7 +6,9 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) throws IOException {
+  
         try {
+        	Scanner scanner = new Scanner(System.in);
             // Initialize database connection
             ParkingLotDB.initializeDatabase();
 
@@ -18,7 +20,7 @@ public class Main {
             Zone zone = new Zone();
             Vehicle vehicle = new Vehicle();
             PermitAssignment permitAssignment = new PermitAssignment();
-            Scanner scanner = new Scanner(System.in);
+            //Scanner scanner = new Scanner(System.in);
 
             while (true) {
                 System.out.println("Choose an operation:");
@@ -75,7 +77,7 @@ public class Main {
 
     private static void performDriverOperations(Driver driver, Scanner scanner) {
     	// Accept user input for Driver Information
-        Scanner scanner = new Scanner(System.in);
+        
         System.out.println("Enter Driver Information:");
         System.out.print("Phone Number: ");
         String phoneNum = scanner.nextLine();
@@ -282,7 +284,7 @@ public class Main {
         String newSpaceType = scanner.nextLine();
 
         boolean updatePermitSuccess = permit.updatePermitInfo(updatePermitID, newPermitType, newStartDate,
-                newExpirationDate, newExpirationTime, permitParkingLotName, permitParkingLotAddress, permitZoneID, newPermitType,
+                newExpirationDate, newExpirationTime, permitParkingLotName, permitParkingLotAddress, permitZoneID,
                 newSpaceType);
 
         if (updatePermitSuccess) {

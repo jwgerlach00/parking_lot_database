@@ -8,9 +8,9 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class ParkingLot {
-    private static final String ENTER_PARKING_LOT_INFO_SQL_FILE = "/sql/information_processing/enter_parking_lot_info.sql";
-    private static final String UPDATE_PARKING_LOT_INFO_SQL_FILE = "/sql/information_processing/update_parking_lot_info.sql";
-    private static final String DELETE_PARKING_LOT_INFO_SQL_FILE = "/sql/information_processing/delete_parking_lot_info.sql";
+    private static final String ENTER_PARKING_LOT_INFO_SQL_FILE = "/resources/information_processing/enter_parking_lot_info.sql";
+    private static final String UPDATE_PARKING_LOT_INFO_SQL_FILE = "/resources/information_processing/update_parking_lot_info.sql";
+    private static final String DELETE_PARKING_LOT_INFO_SQL_FILE = "/resources/information_processing/delete_parking_lot_info.sql";
 
     public boolean enterParkingLotInfo(String name, String address) {
         return executeUpdateOperation(ENTER_PARKING_LOT_INFO_SQL_FILE, name, address);
@@ -25,8 +25,9 @@ public class ParkingLot {
     }
 
     private boolean executeUpdateOperation(String sqlFilePath, Object... params) {
-        try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement preparedStatement = getPreparedStatement(connection, sqlFilePath)) {
+        try {
+        	Connection connection = ParkingLotDB.initializeDatabase();
+            PreparedStatement preparedStatement = getPreparedStatement(connection, sqlFilePath);
 
             // Set parameters and execute SQL
             for (int i = 0; i < params.length; i++) {

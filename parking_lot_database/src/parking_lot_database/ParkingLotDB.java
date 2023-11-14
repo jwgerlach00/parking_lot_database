@@ -7,13 +7,16 @@ import java.sql.SQLException;
 public class ParkingLotDB {
     private static Connection conn;
 
-    public static void initializeDatabase() throws SQLException {
+    public static Connection initializeDatabase() throws SQLException {
         String url = "jdbc:mariadb://classdb2.csc.ncsu.edu:3306/";
-        String user = "username";
-        String password = "password";
+        String user = "skhanap2";
+        String password = "200536582";
 
         conn = DriverManager.getConnection(url, user, password);
+        
         System.out.println("Successfully connected to DB");
+        
+        return conn;
     }
 
     public static void closeDatabase() {

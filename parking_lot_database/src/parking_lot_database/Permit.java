@@ -8,11 +8,10 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class Permit {
-    private static final String ENTER_PERMIT_INFO_SQL_FILE = "/sql/information_processing/enter_permit_info.sql";
-    private static final String UPDATE_PERMIT_INFO_SQL_FILE = "/sql/information_processing/update_permit_info.sql";
-    private static final String DELETE_PERMIT_INFO_SQL_FILE = "/sql/information_processing/delete_permit_info.sql";
+    private static final String ENTER_PERMIT_INFO_SQL_FILE = "/resources/information_processing/enter_permit_info.sql";
+    private static final String UPDATE_PERMIT_INFO_SQL_FILE = "/resources/information_processing/update_permit_info.sql";
+    private static final String DELETE_PERMIT_INFO_SQL_FILE = "/resources/information_processing/delete_permit_info.sql";
     
-
 
     public boolean enterPermitInfo(int permitID, String startDate, String expirationDate, String expirationTime,
                                    String parkingLotName, String parkingLotAddress, String zoneID,
@@ -23,8 +22,8 @@ public class Permit {
 
     public boolean updatePermitInfo(int permitID, String newPermitType, String newStartDate, String newExpirationDate,
                                     String newExpirationTime, String parkingLotName, String parkingLotAddress,
-                                    String zoneID, String newPermitType, String newSpaceType) {
-        return executeUpdateOperation(UPDATE_PERMIT_INFO_SQL_FILE, newPermitType, newStartDate, newExpirationDate,
+                                    String zoneID, String newSpaceType) {
+        return executeUpdateOperation(UPDATE_PERMIT_INFO_SQL_FILE, newStartDate, newExpirationDate,
                 newExpirationTime, parkingLotName, parkingLotAddress, zoneID, newPermitType, newSpaceType, permitID);
     }
 
@@ -33,8 +32,9 @@ public class Permit {
     }
 
     private boolean executeUpdateOperation(String sqlFilePath, Object... params) {
-        try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement preparedStatement = getPreparedStatement(connection, sqlFilePath)) {
+        try {
+        	Connection connection = ParkingLotDB.initializeDatabase();
+            PreparedStatement preparedStatement = getPreparedStatement(connection, sqlFilePath);
 
             // Set parameters and execute SQL
             for (int i = 0; i < params.length; i++) {

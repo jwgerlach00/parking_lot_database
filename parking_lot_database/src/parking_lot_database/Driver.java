@@ -7,9 +7,9 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class Driver{
-    private static final String ENTER_DRIVER_INFO_SQL_FILE = "/sql/information_processing/enter_driver_info.sql";
-    private static final String UPDATE_DRIVER_INFO_SQL_FILE = "/sql/information_processing/update_driver_info.sql";
-    private static final String DELETE_DRIVER_INFO_SQL_FILE = "/sql/information_processing/delete_driver_info.sql";
+    private static final String ENTER_DRIVER_INFO_SQL_FILE = "/resources/information_processing/enter_driver_info.sql";
+    private static final String UPDATE_DRIVER_INFO_SQL_FILE = "/resources/information_processing/update_driver_info.sql";
+    private static final String DELETE_DRIVER_INFO_SQL_FILE = "/resources/information_processing/delete_driver_info.sql";
 
     public boolean enterDriverInfo(String phoneNum, String name, String status) {
         return executeUpdateOperation(ENTER_DRIVER_INFO_SQL_FILE, phoneNum, name, status);
@@ -24,8 +24,10 @@ public class Driver{
     }
 
     private boolean executeUpdateOperation(String sqlFilePath, Object... params) {
-        try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement preparedStatement = getPreparedStatement(connection, sqlFilePath)) {
+        try {
+        	
+        	Connection connection = ParkingLotDB.initializeDatabase();
+             PreparedStatement preparedStatement = getPreparedStatement(connection, sqlFilePath);
 
             // Set parameters and execute SQL
             for (int i = 0; i < params.length; i++) {

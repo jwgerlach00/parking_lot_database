@@ -6,7 +6,11 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="src" path="resources"/>
+	<classpathentry kind="src" path="resources">
+		<attributes>
+			<attribute name="ignore_optional_problems" value="true"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="src" path="sql"/>
 	<classpathentry exported="true" kind="lib" path="C:/Users/Admin/Downloads/mariadb-java-client-2.3.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
