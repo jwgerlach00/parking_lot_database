@@ -1,5 +1,5 @@
 UPDATE Permits
-SET permitType='residential',
+SET
 	startDate='XXXX-XX-XX',
     expirationDate='XXXX-XX-XX',
     expirationTime='00:00:00',

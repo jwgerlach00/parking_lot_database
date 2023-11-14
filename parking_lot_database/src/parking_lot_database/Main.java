@@ -20,6 +20,7 @@ public class Main {
             Zone zone = new Zone();
             Vehicle vehicle = new Vehicle();
             PermitAssignment permitAssignment = new PermitAssignment();
+            Citation citation = new Citation();
             //Scanner scanner = new Scanner(System.in);
 
             while (true) {
@@ -29,8 +30,9 @@ public class Main {
                 System.out.println("3. Space Operations");
                 System.out.println("4. Permit Operations");
                 System.out.println("5. Zone Operations");
-                System.out.println("6. Vehicle Operations"); // Added Vehicle Operations
+                System.out.println("6. Vehicle Operations");
                 System.out.println("7. Permit Assignment Operations");
+                System.out.println("8. Citation Operations"); // Added Citation Operations
                 System.out.println("0. Exit");
 
                 int choice = scanner.nextInt();
@@ -53,10 +55,13 @@ public class Main {
                         performZoneOperations(zone, scanner);
                         break;
                     case 6:
-                        performVehicleOperations(vehicle, scanner); // Added Vehicle Operations
+                        performVehicleOperations(vehicle, scanner);
                         break;
                     case 7:
-                        performPermitAssignmentOperations(permitAssignment, scanner); // New addition
+                        performPermitAssignmentOperations(permitAssignment, scanner);
+                        break;
+                    case 8:
+                        performCitationOperations(citation, scanner);
                         break;
                     case 0:
                         System.out.println("Exiting program.");
@@ -65,6 +70,7 @@ public class Main {
                         System.out.println("Invalid choice. Please enter a valid option.");
                 }
             }
+
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -486,4 +492,142 @@ public class Main {
             System.out.println("Failed to assign permit to drivers.");
         }
     }
+    
+    private static void performCitationOperations(Citation citation, Scanner scanner) {
+        while (true) {
+            System.out.println("Citation Operations:");
+            System.out.println("1. Delete Citation");
+            System.out.println("2. Detect Parking Violation");
+            System.out.println("3. Drivers Appeal Citations");
+            System.out.println("4. Drivers Pay Citations");
+            System.out.println("5. Generate New Citation");
+            System.out.println("6. Update Citation Information");
+            System.out.println("0. Back to Main Menu");
+
+            int citationChoice = scanner.nextInt();
+            scanner.nextLine(); // Consume the newline character
+
+            switch (citationChoice) {
+                case 1:
+                    deleteCitation(citation, scanner);
+                    break;
+                case 2:
+                    detectParkingViolation(citation, scanner);
+                    break;
+                case 3:
+                    driversAppealCitations(citation, scanner);
+                    break;
+                case 4:
+                    driversPayCitations(citation, scanner);
+                    break;
+                case 5:
+                    generateNewCitation(citation, scanner);
+                    break;
+                case 6:
+                    updateCitationInformation(citation, scanner);
+                    break;
+                case 0:
+                    System.out.println("Returning to the main menu.");
+                    return;
+                default:
+                    System.out.println("Invalid choice. Please enter a valid option.");
+            }
+        }
+    }
+
+    private static void deleteCitation(Citation citation, Scanner scanner) {
+        System.out.print("Enter Citation Number to Delete: ");
+        String citationNum = scanner.nextLine();
+
+        boolean deleteCitationSuccess = citation.deleteCitation(citationNum);
+        if (deleteCitationSuccess) {
+            System.out.println("Citation deleted successfully.");
+        } else {
+            System.out.println("Failed to delete citation.");
+        }
+    }
+
+    private static void detectParkingViolation(Citation citation, Scanner scanner) {
+        System.out.print("Enter License Number: ");
+        String licenseNum = scanner.nextLine();
+        System.out.print("Enter Parking Lot Name: ");
+        String parkingLotName = scanner.nextLine();
+        System.out.print("Enter Parking Lot Address: ");
+        String parkingLotAddress = scanner.nextLine();
+        System.out.print("Enter Zone ID: ");
+        String zoneID = scanner.nextLine();
+
+        boolean violationDetected = citation.detectParkingViolation(licenseNum, parkingLotName, parkingLotAddress, zoneID);
+        if (violationDetected) {
+            System.out.println("Parking violation detected.");
+        } else {
+            System.out.println("No parking violation detected.");
+        }
+    }
+
+    private static void driversAppealCitations(Citation citation, Scanner scanner) {
+        System.out.print("Enter Citation Number for Appeal: ");
+        String citationNum = scanner.nextLine();
+
+        boolean appealSuccess = citation.driversAppealCitations(citationNum);
+        if (appealSuccess) {
+            System.out.println("Citation appeal requested successfully.");
+        } else {
+            System.out.println("Failed to request citation appeal.");
+        }
+    }
+
+    private static void driversPayCitations(Citation citation, Scanner scanner) {
+        System.out.print("Enter Citation Number for Payment: ");
+        String citationNum = scanner.nextLine();
+
+        boolean paySuccess = citation.driversPayCitations(citationNum);
+        if (paySuccess) {
+            System.out.println("Citation payment processed successfully.");
+        } else {
+            System.out.println("Failed to process citation payment.");
+        }
+    }
+
+    private static void generateNewCitation(Citation citation, Scanner scanner) {
+        System.out.println("Enter New Citation Information:");
+        // Provide input for the new citation details
+        // ...
+    }
+
+    private static void updateCitationInformation(Citation citation, Scanner scanner) {
+        System.out.print("Enter Citation Number to Update: ");
+        String citationNum = scanner.nextLine();
+
+        System.out.println("Enter Updated Citation Information:");
+        System.out.print("New Citation Date: ");
+        String newCitationDate = scanner.nextLine();
+        System.out.print("New Citation Time: ");
+        String newCitationTime = scanner.nextLine();
+        System.out.print("New Vehicle License Number: ");
+        String newVehicleLicenseNum = scanner.nextLine();
+        System.out.print("New Vehicle Model: ");
+        String newVehicleModel = scanner.nextLine();
+        System.out.print("New Vehicle Color: ");
+        String newVehicleColor = scanner.nextLine();
+        System.out.print("New Parking Lot Name: ");
+        String newParkingLotName = scanner.nextLine();
+        System.out.print("New Parking Lot Address: ");
+        String newParkingLotAddress = scanner.nextLine();
+        System.out.print("New Category: ");
+        String newCategory = scanner.nextLine();
+
+        boolean updateSuccess = citation.updateCitationInformation(
+                citationNum, newCitationDate, newCitationTime, newVehicleLicenseNum,
+                newVehicleModel, newVehicleColor, newParkingLotName, newParkingLotAddress, newCategory
+        );
+
+        if (updateSuccess) {
+            System.out.println("Citation information updated successfully.");
+        } else {
+            System.out.println("Failed to update citation information.");
+        }
+    }
+
+
 }
