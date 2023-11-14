@@ -8,9 +8,9 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class Space {
-    private static final String ENTER_SPACE_INFO_SQL_FILE = "/sql/enter_space_info.sql";
-    private static final String UPDATE_SPACE_INFO_SQL_FILE = "/sql/update_space_info.sql";
-    private static final String DELETE_SPACE_INFO_SQL_FILE = "/sql/delete_space_info.sql";
+    private static final String ENTER_SPACE_INFO_SQL_FILE = "/sql/information_processing/enter_space_info.sql";
+    private static final String UPDATE_SPACE_INFO_SQL_FILE = "/sql/information_processing/update_space_info.sql";
+    private static final String DELETE_SPACE_INFO_SQL_FILE = "/sql/information_processing/delete_space_info.sql";
 
     public boolean enterSpaceInfo(int spaceNum, String spaceType, boolean availabilityStatus,
                                   String parkingLotName, String parkingLotAddress, String zoneID) {

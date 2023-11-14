@@ -8,9 +8,11 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class Permit {
-    private static final String ENTER_PERMIT_INFO_SQL_FILE = "/sql/enter_permit_info.sql";
-    private static final String UPDATE_PERMIT_INFO_SQL_FILE = "/sql/update_permit_info.sql";
-    private static final String DELETE_PERMIT_INFO_SQL_FILE = "/sql/delete_permit_info.sql";
+    private static final String ENTER_PERMIT_INFO_SQL_FILE = "/sql/information_processing/enter_permit_info.sql";
+    private static final String UPDATE_PERMIT_INFO_SQL_FILE = "/sql/information_processing/update_permit_info.sql";
+    private static final String DELETE_PERMIT_INFO_SQL_FILE = "/sql/information_processing/delete_permit_info.sql";
+    
+
 
     public boolean enterPermitInfo(int permitID, String startDate, String expirationDate, String expirationTime,
                                    String parkingLotName, String parkingLotAddress, String zoneID,

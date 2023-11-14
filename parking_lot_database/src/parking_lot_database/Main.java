@@ -16,7 +16,8 @@ public class Main {
             ParkingLot parkingLot = new ParkingLot();
             Permit permit = new Permit();
             Zone zone = new Zone();
-
+            Vehicle vehicle = new Vehicle();
+            PermitAssignment permitAssignment = new PermitAssignment();
             Scanner scanner = new Scanner(System.in);
 
             while (true) {
@@ -26,6 +27,8 @@ public class Main {
                 System.out.println("3. Space Operations");
                 System.out.println("4. Permit Operations");
                 System.out.println("5. Zone Operations");
+                System.out.println("6. Vehicle Operations"); // Added Vehicle Operations
+                System.out.println("7. Permit Assignment Operations");
                 System.out.println("0. Exit");
 
                 int choice = scanner.nextInt();
@@ -46,6 +49,12 @@ public class Main {
                         break;
                     case 5:
                         performZoneOperations(zone, scanner);
+                        break;
+                    case 6:
+                        performVehicleOperations(vehicle, scanner); // Added Vehicle Operations
+                        break;
+                    case 7:
+                        performPermitAssignmentOperations(permitAssignment, scanner); // New addition
                         break;
                     case 0:
                         System.out.println("Exiting program.");
@@ -340,6 +349,139 @@ public class Main {
             System.out.println("Zone information deleted successfully.");
         } else {
             System.out.println("Failed to delete Zone information.");
+        }
+    }
+    
+ 
+    private static void performVehicleOperations(Vehicle vehicle, Scanner scanner) {
+    	while (true) {
+            System.out.println("Vehicle Operations:");
+            System.out.println("1. Add Vehicle");
+            System.out.println("2. Remove Vehicle");
+            System.out.println("3. Update Vehicle Ownership Info");
+            System.out.println("4. Enter Vehicle Ownership Info");
+            System.out.println("0. Back to Main Menu");
+
+            int vehicleChoice = scanner.nextInt();
+            scanner.nextLine(); // Consume the newline character
+
+            switch (vehicleChoice) {
+                case 1:
+                    addVehicle(vehicle, scanner);
+                    break;
+                case 2:
+                    removeVehicle(vehicle, scanner);
+                    break;
+                case 3:
+                    updateVehicleOwnershipInfo(vehicle, scanner);
+                    break;
+                case 4:
+                    enterVehicleOwnershipInfo(vehicle, scanner);
+                    break;
+                case 0:
+                    System.out.println("Returning to the main menu.");
+                    return;
+                default:
+                    System.out.println("Invalid choice. Please enter a valid option.");
+            }
+        }
+    }
+
+    private static void addVehicle(Vehicle vehicle, Scanner scanner) {
+    	
+        System.out.println("Enter Vehicle Information:");
+        System.out.print("License Number: ");
+        String licenseNum = scanner.nextLine();
+        System.out.print("Model: ");
+        String model = scanner.nextLine();
+        System.out.print("Color: ");
+        String color = scanner.nextLine();
+        System.out.print("Manufacturer: ");
+        String manufacturer = scanner.nextLine();
+        System.out.print("Year: ");
+        String year = scanner.nextLine();
+
+        boolean addVehicleSuccess = vehicle.addVehicle(licenseNum, model, color, manufacturer, year);
+        if (addVehicleSuccess) {
+            System.out.println("Vehicle added successfully.");
+        } else {
+            System.out.println("Failed to add vehicle.");
+        }
+    }
+
+    private static void removeVehicle(Vehicle vehicle, Scanner scanner) {
+        System.out.print("Enter License Number to Remove Vehicle: ");
+        String licenseNum = scanner.nextLine();
+
+        boolean removeVehicleSuccess = vehicle.removeVehicle(licenseNum);
+        if (removeVehicleSuccess) {
+            System.out.println("Vehicle removed successfully.");
+        } else {
+            System.out.println("Failed to remove vehicle.");
+        }
+    }
+
+    private static void updateVehicleOwnershipInfo(Vehicle vehicle, Scanner scanner) {
+        System.out.print("Enter Driver ID for Vehicle Ownership Update: ");
+        String driverID = scanner.nextLine();
+        System.out.print("Enter Vehicle License Number: ");
+        String vehicleLicenseNum = scanner.nextLine();
+
+        boolean updateVehicleOwnershipSuccess = vehicle.updateVehicleOwnershipInfo(driverID, vehicleLicenseNum);
+        if (updateVehicleOwnershipSuccess) {
+            System.out.println("Vehicle ownership info updated successfully.");
+        } else {
+            System.out.println("Failed to update vehicle ownership info.");
+        }
+    }
+
+    private static void enterVehicleOwnershipInfo(Vehicle vehicle, Scanner scanner) {
+        System.out.print("Enter Driver ID for Vehicle Ownership: ");
+        String driverID = scanner.nextLine();
+        System.out.print("Enter Vehicle License Number: ");
+        String licenseNum = scanner.nextLine();
+
+        boolean enterVehicleOwnershipSuccess = vehicle.enterVehicleOwnershipInfo(driverID, licenseNum);
+        if (enterVehicleOwnershipSuccess) {
+            System.out.println("Vehicle ownership info entered successfully.");
+        } else {
+            System.out.println("Failed to enter vehicle ownership info.");
+        }
+    }
+    
+    private static void performPermitAssignmentOperations(PermitAssignment permitAssignment, Scanner scanner) {
+        while (true) {
+            System.out.println("Permit Assignment Operations:");
+            System.out.println("1. Assign Permit to Drivers");
+            System.out.println("0. Back to Main Menu");
+
+            int permitAssignmentChoice = scanner.nextInt();
+            scanner.nextLine(); // Consume the newline character
+
+            switch (permitAssignmentChoice) {
+                case 1:
+                    assignPermitToDrivers(permitAssignment, scanner);
+                    break;
+                case 0:
+                    System.out.println("Returning to the main menu.");
+                    return;
+                default:
+                    System.out.println("Invalid choice. Please enter a valid option.");
+            }
+        }
+    }
+
+    private static void assignPermitToDrivers(PermitAssignment permitAssignment, Scanner scanner) {
+        System.out.print("Enter Driver ID for Permit Assignment: ");
+        String driverID = scanner.nextLine();
+        System.out.print("Enter Permit ID: ");
+        String permitID = scanner.nextLine();
+
+        boolean assignPermitSuccess = permitAssignment.assignPermitToDrivers(driverID, permitID);
+        if (assignPermitSuccess) {
+            System.out.println("Permit assigned to drivers successfully.");
+        } else {
+            System.out.println("Failed to assign permit to drivers.");
         }
     }
 }

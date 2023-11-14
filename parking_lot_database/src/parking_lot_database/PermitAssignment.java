@@ -7,21 +7,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class ParkingLot {
-    private static final String ENTER_PARKING_LOT_INFO_SQL_FILE = "/sql/information_processing/enter_parking_lot_info.sql";
-    private static final String UPDATE_PARKING_LOT_INFO_SQL_FILE = "/sql/information_processing/update_parking_lot_info.sql";
-    private static final String DELETE_PARKING_LOT_INFO_SQL_FILE = "/sql/information_processing/delete_parking_lot_info.sql";
+public class PermitAssignment {
+    private static final String ASSIGN_PERMIT_TO_DRIVERS_SQL_FILE = "/sql/maintaining_permits_and_vehicle_info/assign_permit_to_drivers.sql";
 
-    public boolean enterParkingLotInfo(String name, String address) {
-        return executeUpdateOperation(ENTER_PARKING_LOT_INFO_SQL_FILE, name, address);
-    }
-
-    public boolean updateParkingLotInfo(String oldName, String oldAddress, String newName, String newAddress) {
-        return executeUpdateOperation(UPDATE_PARKING_LOT_INFO_SQL_FILE, newName, newAddress, oldName, oldAddress);
-    }
-
-    public boolean deleteParkingLotInfo(String name, String address) {
-        return executeUpdateOperation(DELETE_PARKING_LOT_INFO_SQL_FILE, name, address);
+    public boolean assignPermitToDrivers(String driverID, String permitID) {
+        return executeUpdateOperation(ASSIGN_PERMIT_TO_DRIVERS_SQL_FILE, driverID, permitID);
     }
 
     private boolean executeUpdateOperation(String sqlFilePath, Object... params) {
