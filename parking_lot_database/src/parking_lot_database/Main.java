@@ -21,6 +21,7 @@ public class Main {
             Vehicle vehicle = new Vehicle();
             PermitAssignment permitAssignment = new PermitAssignment();
             Citation citation = new Citation();
+            ReportGenerator reportGenerator = new ReportGenerator();
             //Scanner scanner = new Scanner(System.in);
 
             while (true) {
@@ -32,7 +33,8 @@ public class Main {
                 System.out.println("5. Zone Operations");
                 System.out.println("6. Vehicle Operations");
                 System.out.println("7. Permit Assignment Operations");
-                System.out.println("8. Citation Operations"); // Added Citation Operations
+                System.out.println("8. Citation Operations"); 
+                System.out.println("9. Report Operations");
                 System.out.println("0. Exit");
 
                 int choice = scanner.nextInt();
@@ -62,6 +64,9 @@ public class Main {
                         break;
                     case 8:
                         performCitationOperations(citation, scanner);
+                        break;
+                    case 9:
+                        performReportOperations(reportGenerator, scanner); 
                         break;
                     case 0:
                         System.out.println("Exiting program.");
@@ -589,11 +594,49 @@ public class Main {
         }
     }
 
+
     private static void generateNewCitation(Citation citation, Scanner scanner) {
         System.out.println("Enter New Citation Information:");
-        // Provide input for the new citation details
-        // ...
+
+        // Get user input for new citation details
+        System.out.print("Citation Number: ");
+        String citationNum = scanner.nextLine();
+
+        System.out.print("Citation Date (YYYY-MM-DD): ");
+        String citationDate = scanner.nextLine();
+
+        System.out.print("Citation Time (HH:mm:ss): ");
+        String citationTime = scanner.nextLine();
+
+        System.out.print("Vehicle License Number: ");
+        String vehicleLicenseNum = scanner.nextLine();
+
+        System.out.print("Vehicle Model: ");
+        String vehicleModel = scanner.nextLine();
+
+        System.out.print("Vehicle Color: ");
+        String vehicleColor = scanner.nextLine();
+
+        System.out.print("Parking Lot Name: ");
+        String parkingLotName = scanner.nextLine();
+
+        System.out.print("Parking Lot Address: ");
+        String parkingLotAddress = scanner.nextLine();
+
+        System.out.print("Citation Category: ");
+        String citationCategory = scanner.nextLine();
+
+        // Call the method in Citation class to generate a new citation
+        boolean success = citation.generateNewCitation(citationNum, citationDate, citationTime, vehicleLicenseNum,
+                vehicleModel, vehicleColor, parkingLotName, parkingLotAddress, citationCategory);
+
+        if (success) {
+            System.out.println("New citation generated successfully.");
+        } else {
+            System.out.println("Failed to generate a new citation. Please try again.");
+        }
     }
+
 
     private static void updateCitationInformation(Citation citation, Scanner scanner) {
         System.out.print("Enter Citation Number to Update: ");
@@ -629,5 +672,85 @@ public class Main {
         }
     }
 
+    private static void performReportOperations(ReportGenerator reportGenerator, Scanner scanner) {
+        while (true) {
+            System.out.println("Report Operations:");
+            System.out.println("1. Generate Total Citations Report");
+            System.out.println("2. List Zones for All Lots");
+            System.out.println("3. Count Violation Cars");
+            System.out.println("4. Count Employees Permits by Zone");
+            System.out.println("5. Get Permit Info by Driver ID or Phone Num");
+            System.out.println("6. Return Available Space by Type in Lot");
+            System.out.println("0. Back to Main Menu");
+
+            int reportChoice = scanner.nextInt();
+            scanner.nextLine(); // Consume the newline character
+
+            switch (reportChoice) {
+                case 1:
+                    generateTotalCitationsReport(reportGenerator, scanner);
+                    break;
+                case 2:
+                    listZonesForAllLots(reportGenerator);
+                    break;
+                case 3:
+                    countViolationCars(reportGenerator);
+                    break;
+                case 4:
+                    countEmployeesPermitsByZone(reportGenerator);
+                    break;
+                case 5:
+                    getPermitInfoByDriverIdOrPhoneNum(reportGenerator, scanner);
+                    break;
+                case 6:
+                    returnAvailableSpaceByTypeInLot(reportGenerator, scanner);
+                    break;
+                case 0:
+                    System.out.println("Returning to the main menu.");
+                    return;
+                default:
+                    System.out.println("Invalid choice. Please enter a valid option.");
+            }
+        }
+    }
+
+    private static void generateTotalCitationsReport(ReportGenerator reportGenerator, Scanner scanner) {
+        System.out.print("Enter Start Date (YYYY-MM-DD): ");
+        String startDate = scanner.nextLine();
+        System.out.print("Enter End Date (YYYY-MM-DD): ");
+        String endDate = scanner.nextLine();
+
+        reportGenerator.generateTotalCitationsReport(startDate, endDate);
+    }
+
+    private static void listZonesForAllLots(ReportGenerator reportGenerator) {
+        reportGenerator.listZonesForAllLots();
+    }
+
+    private static void countViolationCars(ReportGenerator reportGenerator) {
+        reportGenerator.countViolationCars();
+    }
+
+    private static void countEmployeesPermitsByZone(ReportGenerator reportGenerator) {
+        reportGenerator.countEmployeesPermitsByZone();
+    }
+
+    private static void getPermitInfoByDriverIdOrPhoneNum(ReportGenerator reportGenerator, Scanner scanner) {
+        System.out.print("Enter Driver ID or Phone Number: ");
+        String identifier = scanner.nextLine();
+
+        reportGenerator.getPermitInfoByDriverIdOrPhoneNum(identifier);
+    }
+
+    private static void returnAvailableSpaceByTypeInLot(ReportGenerator reportGenerator, Scanner scanner) {
+        System.out.print("Enter Space Type: ");
+        String spaceType = scanner.nextLine();
+        System.out.print("Enter Parking Lot Name: ");
+        String parkingLotName = scanner.nextLine();
+        System.out.print("Enter Parking Lot Address: ");
+        String parkingLotAddress = scanner.nextLine();
+
+        reportGenerator.returnAvailableSpaceByTypeInLot(spaceType, parkingLotName, parkingLotAddress);
+    }
 
 }

@@ -9,8 +9,8 @@ public class ParkingLotDB {
 
     public static Connection initializeDatabase() throws SQLException {
         String url = "jdbc:mariadb://classdb2.csc.ncsu.edu:3306/";
-        String user = "skhanap2";
-        String password = "200536582";
+        String user = "username";
+        String password = "password";
 
         conn = DriverManager.getConnection(url, user, password);
         
