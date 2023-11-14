@@ -1,2 +1,0 @@
-DELETE FROM Zones
-WHERE zoneID='ZONE_ID' AND parkingLotName='PARKING_LOT_NAME' AND parkingLotAddress='PARKING_LOT_ADDRESS';
