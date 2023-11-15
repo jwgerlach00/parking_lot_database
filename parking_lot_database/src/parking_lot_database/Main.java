@@ -169,7 +169,36 @@ public class Main {
     }
 
     private static void performParkingLotOperations(ParkingLot parkingLot, Scanner scanner) {
-    	// Enter Parking Lot Information
+        while (true) {
+            System.out.println("Parking Lot Operations:");
+            System.out.println("1. Enter Parking Lot Information");
+            System.out.println("2. Update Parking Lot Information");
+            System.out.println("3. Delete Parking Lot Information");
+            System.out.println("0. Back to Main Menu");
+
+            int parkingLotChoice = scanner.nextInt();
+            scanner.nextLine(); // Consume the newline character
+
+            switch (parkingLotChoice) {
+                case 1:
+                    enterParkingLotInfo(parkingLot, scanner);
+                    break;
+                case 2:
+                    updateParkingLotInfo(parkingLot, scanner);
+                    break;
+                case 3:
+                    deleteParkingLotInfo(parkingLot, scanner);
+                    break;
+                case 0:
+                    System.out.println("Returning to the main menu.");
+                    return;
+                default:
+                    System.out.println("Invalid choice. Please enter a valid option.");
+            }
+        }
+    }
+
+    private static void enterParkingLotInfo(ParkingLot parkingLot, Scanner scanner) {
         System.out.println("\nEnter Parking Lot Information:");
         System.out.print("Name: ");
         String parkingLotName = scanner.nextLine();
@@ -182,8 +211,9 @@ public class Main {
         } else {
             System.out.println("Failed to enter Parking Lot information.");
         }
+    }
 
-        // Update Parking Lot Information
+    private static void updateParkingLotInfo(ParkingLot parkingLot, Scanner scanner) {
         System.out.println("\nEnter Updated Parking Lot Information:");
         System.out.print("Old Name: ");
         String oldParkingLotName = scanner.nextLine();
@@ -200,8 +230,9 @@ public class Main {
         } else {
             System.out.println("Failed to update Parking Lot information.");
         }
+    }
 
-        // Delete Parking Lot Information
+    private static void deleteParkingLotInfo(ParkingLot parkingLot, Scanner scanner) {
         System.out.println("\nEnter Parking Lot Information to Delete:");
         System.out.print("Name: ");
         String deleteParkingLotName = scanner.nextLine();
@@ -214,7 +245,6 @@ public class Main {
         } else {
             System.out.println("Failed to delete Parking Lot information.");
         }
-
     }
 
     private static void performSpaceOperations(Space space, Scanner scanner) {
