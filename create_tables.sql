@@ -105,9 +105,7 @@ CREATE TABLE PermitsAssignedVehicles (
 	licenseNum CHAR(8),
     PRIMARY KEY(permitID, licenseNum),
 	FOREIGN KEY(permitID) REFERENCES Permits(permitID) ON UPDATE CASCADE,
-	FOREIGN KEY (licenseNum) REFERENCES Vehicles(licenseNum)
-ON DELETE CASCADE
-ON UPDATE CASCADE;
+	FOREIGN KEY (licenseNum) REFERENCES Vehicles(licenseNum) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE DriversOwnVehicles (
