@@ -311,7 +311,37 @@ public class Main {
     }
 
     private static void performPermitOperations(Permit permit, Scanner scanner) {
-    	// Enter Permit Information
+        while (true) {
+            System.out.println("Permit Operations:");
+            System.out.println("1. Enter Permit Information");
+            System.out.println("2. Update Permit Information");
+            System.out.println("3. Delete Permit Information");
+            System.out.println("0. Back to Main Menu");
+
+            int permitChoice = scanner.nextInt();
+            scanner.nextLine(); // Consume the newline character
+
+            switch (permitChoice) {
+                case 1:
+                    enterPermitInfo(permit, scanner);
+                    break;
+                case 2:
+                    updatePermitInfo(permit, scanner);
+                    break;
+                case 3:
+                    deletePermitInfo(permit, scanner);
+                    break;
+                case 0:
+                    System.out.println("Returning to the main menu.");
+                    return;
+                default:
+                    System.out.println("Invalid choice. Please enter a valid option.");
+            }
+        }
+    }
+
+    private static void enterPermitInfo(Permit permit, Scanner scanner) {
+        // Enter Permit Information
         System.out.println("\nEnter Permit Information:");
         System.out.print("Permit ID: ");
         int permitID = scanner.nextInt();
@@ -341,8 +371,9 @@ public class Main {
         } else {
             System.out.println("Failed to enter Permit information.");
         }
+    }
 
-        // Update Permit Information
+    private static void updatePermitInfo(Permit permit, Scanner scanner) {
         System.out.println("\nEnter Updated Permit Information:");
         System.out.print("Permit ID to Update: ");
         int updatePermitID = scanner.nextInt();
@@ -358,6 +389,14 @@ public class Main {
         System.out.print("New Space Type: ");
         String newSpaceType = scanner.nextLine();
 
+        // You need to obtain these values from user input or other sources
+        System.out.print("New Parking Lot Name: ");
+        String permitParkingLotName = scanner.nextLine();
+        System.out.print("New Parking Lot Address: ");
+        String permitParkingLotAddress = scanner.nextLine();
+        System.out.print("New Zone ID: ");
+        String permitZoneID = scanner.nextLine();
+
         boolean updatePermitSuccess = permit.updatePermitInfo(updatePermitID, newPermitType, newStartDate,
                 newExpirationDate, newExpirationTime, permitParkingLotName, permitParkingLotAddress, permitZoneID,
                 newSpaceType);
@@ -367,8 +406,9 @@ public class Main {
         } else {
             System.out.println("Failed to update Permit information.");
         }
+    }
 
-        // Delete Permit Information
+    private static void deletePermitInfo(Permit permit, Scanner scanner) {
         System.out.println("\nEnter Permit ID to Delete:");
         System.out.print("Permit ID: ");
         int deletePermitID = scanner.nextInt();
@@ -381,8 +421,9 @@ public class Main {
         } else {
             System.out.println("Failed to delete Permit information.");
         }
-
     }
+
+  
 
     private static void performZoneOperations(Zone zone, Scanner scanner) {
     	// Accept user input for Zone Information
@@ -553,14 +594,17 @@ public class Main {
         String driverID = scanner.nextLine();
         System.out.print("Enter Permit ID: ");
         String permitID = scanner.nextLine();
+        System.out.print("Enter Driver Status (Employee/Driver/Visitor): ");
+        String driverStatus = scanner.nextLine();
 
-        boolean assignPermitSuccess = permitAssignment.assignPermitToDrivers(driverID, permitID);
+        boolean assignPermitSuccess = permitAssignment.assignPermitToDrivers(driverID, permitID, driverStatus);
         if (assignPermitSuccess) {
             System.out.println("Permit assigned to drivers successfully.");
         } else {
             System.out.println("Failed to assign permit to drivers.");
         }
     }
+
     
     private static void performCitationOperations(Citation citation, Scanner scanner) {
         while (true) {
