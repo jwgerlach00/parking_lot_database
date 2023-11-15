@@ -29,7 +29,7 @@ CREATE TABLE Zones (
 	parkingLotName VARCHAR(128),
 	parkingLotAddress VARCHAR(128),
 	PRIMARY KEY(zoneID, parkingLotName, parkingLotAddress),
-	FOREIGN KEY(parkingLotName, parkingLotAddress) REFERENCES ParkingLots(name, address) ON UPDATE CASCADE,
+	FOREIGN KEY(parkingLotName, parkingLotAddress) REFERENCES ParkingLots(name, address) ON UPDATE CASCADE ON DELETE CASCADE,
 	CHECK (zoneID IN ('A', 'B', 'C', 'D', 'AS', 'BS', 'CS', 'DS', 'V'))
 );
 
@@ -41,8 +41,8 @@ CREATE TABLE Spaces (
 	spaceType VARCHAR(11) NOT NULL DEFAULT 'Regular',
 	availabilityStatus BOOLEAN NOT NULL,
 	PRIMARY KEY(spaceNum, parkingLotName, parkingLotAddress),
-	FOREIGN KEY(parkingLotName, parkingLotAddress) REFERENCES ParkingLots(name, address) ON UPDATE CASCADE,
-    FOREIGN KEY(zoneID, parkingLotName, parkingLotAddress) REFERENCES Zones(zoneID, parkingLotName, parkingLotAddress) ON UPDATE CASCADE,
+	FOREIGN KEY(parkingLotName, parkingLotAddress) REFERENCES ParkingLots(name, address) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY(zoneID, parkingLotName, parkingLotAddress) REFERENCES Zones(zoneID, parkingLotName, parkingLotAddress) ON UPDATE CASCADE ON DELETE CASCADE,
 	CHECK (spaceType IN ('Electric', 'Handicap', 'Compact Car', 'Regular'))
 );
 
@@ -56,8 +56,8 @@ CREATE TABLE Permits (
     zoneID CHAR(2),
 	permitType CHAR(13) NOT NULL,
     spaceType VARCHAR(11) NOT NULL,
-	FOREIGN KEY(parkingLotName, parkingLotaddress) REFERENCES ParkingLots(name, address) ON UPDATE CASCADE,
-    FOREIGN KEY(zoneID) REFERENCES Zones(zoneID) ON UPDATE CASCADE,
+	FOREIGN KEY(parkingLotName, parkingLotaddress) REFERENCES ParkingLots(name, address) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY(zoneID) REFERENCES Zones(zoneID) ON UPDATE CASCADE ON DELETE CASCADE,
 	CHECK (permitType IN ('Residential', 'Commuter', 'Peak hours', 'Special event', 'Park & Ride')),
     CHECK (spaceType IN ('Electric', 'Handicap', 'Compact Car', 'Regular')),
     CHECK (expirationDate >= startDate)
@@ -89,22 +89,22 @@ CREATE TABLE Citations (
 	category CHAR(14),
 	paid BOOLEAN NOT NULL DEFAULT false,
 	appealRequested BOOLEAN NOT NULL DEFAULT false,
-	FOREIGN KEY(parkingLotName, parkingLotAddress) REFERENCES ParkingLots(name, address) ON UPDATE CASCADE,
-	FOREIGN KEY(category) REFERENCES CitationCategoryFees(category) ON UPDATE CASCADE
+	FOREIGN KEY(parkingLotName, parkingLotAddress) REFERENCES ParkingLots(name, address) ON UPDATE CASCADE ON DELETE CASCADE,
+	FOREIGN KEY(category) REFERENCES CitationCategoryFees(category) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE DriversObtainPermits (
 	driverID VARCHAR(10),
 	permitID VARCHAR(8) PRIMARY KEY,
-	FOREIGN KEY(driverID) REFERENCES Drivers(id) ON UPDATE CASCADE,
-	FOREIGN KEY(permitID) REFERENCES Permits(permitID) ON UPDATE CASCADE
+	FOREIGN KEY(driverID) REFERENCES Drivers(id) ON UPDATE CASCADE ON DELETE CASCADE,
+	FOREIGN KEY(permitID) REFERENCES Permits(permitID) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE PermitsAssignedVehicles (
 	permitID VARCHAR(8),
 	licenseNum CHAR(8),
     PRIMARY KEY(permitID, licenseNum),
-	FOREIGN KEY(permitID) REFERENCES Permits(permitID) ON UPDATE CASCADE,
+	FOREIGN KEY(permitID) REFERENCES Permits(permitID) ON UPDATE CASCADE ON DELETE CASCADE,
 	FOREIGN KEY (licenseNum) REFERENCES Vehicles(licenseNum) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
@@ -112,7 +112,7 @@ CREATE TABLE DriversOwnVehicles (
 	driverID VARCHAR(10),
     vehicleLicenseNum CHAR(8),
     PRIMARY KEY(driverID, vehicleLicenseNum),
-    FOREIGN KEY(driverID) REFERENCES Drivers(id) ON UPDATE CASCADE,
+    FOREIGN KEY(driverID) REFERENCES Drivers(id) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY(vehicleLicenseNum) REFERENCES Vehicles(licenseNum) ON UPDATE CASCADE ON DELETE CASCADE
 	
 );
