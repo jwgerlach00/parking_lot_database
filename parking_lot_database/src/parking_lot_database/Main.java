@@ -87,46 +87,80 @@ public class Main {
     }
 
     private static void performDriverOperations(Driver driver, Scanner scanner) {
-    	// Accept user input for Driver Information
-        
+        while (true) {
+            System.out.println("Driver Operations:");
+            System.out.println("1. Enter Driver Information");
+            System.out.println("2. Update Driver Information");
+            System.out.println("3. Delete Driver Information");
+
+            int driverChoice = scanner.nextInt();
+            scanner.nextLine(); // Consume the newline character
+
+            switch (driverChoice) {
+                case 1:
+                    enterDriverInfo(driver, scanner);
+                    break;
+                case 2:
+                    updateDriverInfo(driver, scanner);
+                    break;
+                case 3:
+                    deleteDriverInfo(driver, scanner);
+                    break;
+                case 0:
+                    System.out.println("Returning to the main menu.");
+                    return;
+                default:
+                    System.out.println("Invalid choice. Please enter a valid option.");
+            }
+        }
+    }
+
+    private static void enterDriverInfo(Driver driver, Scanner scanner) {
+        // Accept user input for Driver Information
         System.out.println("Enter Driver Information:");
-        System.out.print("Phone Number: ");
-        String phoneNum = scanner.nextLine();
+        System.out.print("ID: ");
+        String id = scanner.nextLine();
         System.out.print("Name: ");
         String name = scanner.nextLine();
         System.out.print("Status (S/E/V): ");
         String status = scanner.nextLine();
 
         // Enter Driver Information
-        boolean enterSuccess = driver.enterDriverInfo(phoneNum, name, status);
+        boolean enterSuccess = driver.enterDriverInfo(id, name, status);
         if (enterSuccess) {
             System.out.println("Driver information entered successfully.");
         } else {
             System.out.println("Failed to enter driver information.");
         }
+    }
+
+    private static void updateDriverInfo(Driver driver, Scanner scanner) {
+        // Accept user input for Driver Information
+        System.out.println("Enter Updated Driver Information:");
+        System.out.print("ID: ");
+        String id = scanner.nextLine();
+        System.out.print("Updated Name: ");
+        String name = scanner.nextLine();
+        System.out.print("Updated Status (S/E/V): ");
+        String status = scanner.nextLine();
 
         // Update Driver Information
-        System.out.println("\nEnter Updated Driver Information:");
-        System.out.print("Phone Number: ");
-        phoneNum = scanner.nextLine();
-        System.out.print("Updated Name: ");
-        name = scanner.nextLine();
-        System.out.print("Updated Status (S/E/V): ");
-        status = scanner.nextLine();
-
-        boolean updateSuccess = driver.updateDriverInfo(phoneNum, name, status);
+        boolean updateSuccess = driver.updateDriverInfo(id, name, status);
         if (updateSuccess) {
             System.out.println("Driver information updated successfully.");
         } else {
             System.out.println("Failed to update driver information.");
         }
+    }
+
+    
+    private static void deleteDriverInfo(Driver driver, Scanner scanner) {
+        // Accept user input for Driver Information
+        System.out.println("Enter ID to Delete Driver Information:");
+        String id = scanner.nextLine();
 
         // Delete Driver Information
-        System.out.println("\nEnter Phone Number to Delete Driver Information:");
-        System.out.print("Phone Number: ");
-        phoneNum = scanner.nextLine();
-
-        boolean deleteSuccess = driver.deleteDriverInfo(phoneNum);
+        boolean deleteSuccess = driver.deleteDriverInfo(id);
         if (deleteSuccess) {
             System.out.println("Driver information deleted successfully.");
         } else {
