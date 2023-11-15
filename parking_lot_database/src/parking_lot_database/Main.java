@@ -92,6 +92,7 @@ public class Main {
             System.out.println("1. Enter Driver Information");
             System.out.println("2. Update Driver Information");
             System.out.println("3. Delete Driver Information");
+            System.out.println("0. Back to Main Menu");
 
             int driverChoice = scanner.nextInt();
             scanner.nextLine(); // Consume the newline character
