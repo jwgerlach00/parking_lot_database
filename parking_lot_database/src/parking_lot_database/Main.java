@@ -669,10 +669,8 @@ public class Main {
         String driverID = scanner.nextLine();
         System.out.print("Enter Permit ID: ");
         String permitID = scanner.nextLine();
-        System.out.print("Enter Driver Status (Employee/Driver/Visitor): ");
-        String driverStatus = scanner.nextLine();
-
-        boolean assignPermitSuccess = permitAssignment.assignPermitToDrivers(driverID, permitID, driverStatus);
+     
+        boolean assignPermitSuccess = permitAssignment.assignPermitToDrivers(driverID, permitID);
         if (assignPermitSuccess) {
             System.out.println("Permit assigned to drivers successfully.");
         } else {
