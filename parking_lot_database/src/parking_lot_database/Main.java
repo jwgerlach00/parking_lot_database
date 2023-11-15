@@ -288,6 +288,7 @@ public class Main {
         String spaceType = scanner.nextLine();
         System.out.print("Availability Status: ");
         boolean availabilityStatus = scanner.nextBoolean();
+        scanner.nextLine(); // Consume the newline character
         System.out.print("Parking Lot Name: ");
         String spaceParkingLotName = scanner.nextLine();
         System.out.print("Parking Lot Address: ");

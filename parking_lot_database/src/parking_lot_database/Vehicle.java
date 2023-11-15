@@ -24,17 +24,18 @@ public class Vehicle {
     }
 
     public boolean enterVehicleOwnershipInfo(String driverID, String licenseNum) {
-        // Insert into Vehicles
-        boolean vehicleInsertSuccess = executeUpdateOperation(
-                "INSERT INTO Vehicles VALUES (?, ?, ?, ?, ?)",
-                licenseNum, "MODEL", "COLOR", "MANF", "YYYY");
+//        // Insert into Vehicles
+//        boolean vehicleInsertSuccess = executeUpdateOperation(
+//                "INSERT INTO Vehicles VALUES (?, ?, ?, ?, ?)",
+//                licenseNum, "MODEL", "COLOR", "MANF", "YYYY");
 
         // Insert into DriversOwnVehicles
         boolean ownershipInsertSuccess = executeUpdateOperation(
                 "INSERT INTO DriversOwnVehicles VALUES (?, ?)",
                 driverID, licenseNum);
 
-        return vehicleInsertSuccess && ownershipInsertSuccess;
+//        return vehicleInsertSuccess && ownershipInsertSuccess;
+        return ownershipInsertSuccess;
     }
 
     private boolean executeUpdateOperation(String sqlQuery, Object... params) {

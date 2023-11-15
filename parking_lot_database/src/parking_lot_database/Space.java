@@ -9,9 +9,11 @@ public class Space {
 
     public boolean enterSpaceInfo(int spaceNum, String spaceType, boolean availabilityStatus,
                                   String parkingLotName, String parkingLotAddress, String zoneID) {
-        return executeUpdateOperation(
-                "INSERT INTO Spaces VALUES (?, ?, ?, ?, ?, ?, ?)",
-                spaceNum, parkingLotName, parkingLotAddress, zoneID, spaceType, availabilityStatus, parkingLotName);
+    	return executeUpdateOperation(
+    	        "INSERT INTO Spaces VALUES (?, ?, ?, ?, ?, ?)",
+    	        spaceNum, parkingLotName, parkingLotAddress, zoneID, spaceType, availabilityStatus);
+    	
+
     }
 
     public boolean updateSpaceInfo(int spaceNum, String newSpaceType, String newZoneID,
