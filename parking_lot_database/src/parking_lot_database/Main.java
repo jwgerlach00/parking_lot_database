@@ -574,7 +574,7 @@ public class Main {
         System.out.print("Enter Citation Number for Appeal: ");
         String citationNum = scanner.nextLine();
 
-        boolean appealSuccess = citation.driversAppealCitations(citationNum);
+        boolean appealSuccess = citation.appealCitation(citationNum);
         if (appealSuccess) {
             System.out.println("Citation appeal requested successfully.");
         } else {
@@ -586,14 +586,13 @@ public class Main {
         System.out.print("Enter Citation Number for Payment: ");
         String citationNum = scanner.nextLine();
 
-        boolean paySuccess = citation.driversPayCitations(citationNum);
+        boolean paySuccess = citation.payCitation(citationNum);
         if (paySuccess) {
             System.out.println("Citation payment processed successfully.");
         } else {
             System.out.println("Failed to process citation payment.");
         }
     }
-
 
     private static void generateNewCitation(Citation citation, Scanner scanner) {
         System.out.println("Enter New Citation Information:");
@@ -637,7 +636,6 @@ public class Main {
         }
     }
 
-
     private static void updateCitationInformation(Citation citation, Scanner scanner) {
         System.out.print("Enter Citation Number to Update: ");
         String citationNum = scanner.nextLine();
@@ -660,7 +658,7 @@ public class Main {
         System.out.print("New Category: ");
         String newCategory = scanner.nextLine();
 
-        boolean updateSuccess = citation.updateCitationInformation(
+        boolean updateSuccess = citation.updateCitation(
                 citationNum, newCitationDate, newCitationTime, newVehicleLicenseNum,
                 newVehicleModel, newVehicleColor, newParkingLotName, newParkingLotAddress, newCategory
         );
@@ -671,6 +669,7 @@ public class Main {
             System.out.println("Failed to update citation information.");
         }
     }
+
 
     private static void performReportOperations(ReportGenerator reportGenerator, Scanner scanner) {
         while (true) {

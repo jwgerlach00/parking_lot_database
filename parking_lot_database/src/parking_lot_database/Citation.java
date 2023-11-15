@@ -1,94 +1,98 @@
 package parking_lot_database;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Citation {
-    private static final String DELETE_CITATION_SQL_FILE = "/resources/generating_and_maintaining_citations/delete_citations.sql";
-    private static final String DETECT_PARKING_VIOLATION_SQL_FILE = "/resources/generating_and_maintaining_citations/detect_parking_violations_by_checking_if_a_car_has_a_valid_permit_in_the_lot.sql";
-    private static final String DRIVERS_APPEAL_CITATIONS_SQL_FILE = "/resources/generating_and_maintaining_citations/drivers_appeal_citations.sql";
-    private static final String DRIVERS_PAY_CITATIONS_SQL_FILE = "/resources/generating_and_maintaining_citations/drivers_pay_citations.sql";
-    private static final String GENERATE_NEW_CITATION_SQL_FILE = "/resources/generating_and_maintaining_citations/generate_a_new_citation_for_a_parking_violation.sql";
-    private static final String UPDATE_CITATION_INFO_SQL_FILE = "/resources/generating_and_maintaining_citations/update_citation_information.sql";
-
-    public boolean deleteCitation(String citationNum) {
-        return executeUpdateOperation(DELETE_CITATION_SQL_FILE, citationNum);
-    }
-
-    public boolean detectParkingViolation(String licenseNum, String parkingLotName, String parkingLotAddress, String zoneID) {
-        return executeDetectViolationOperation(DETECT_PARKING_VIOLATION_SQL_FILE, licenseNum, parkingLotName, parkingLotAddress, zoneID);
-    }
-
-    public boolean driversAppealCitations(String citationNum) {
-        return executeUpdateOperation(DRIVERS_APPEAL_CITATIONS_SQL_FILE, citationNum);
-    }
-
-    public boolean driversPayCitations(String citationNum) {
-        return executeUpdateOperation(DRIVERS_PAY_CITATIONS_SQL_FILE, citationNum);
-    }
-
     public boolean generateNewCitation(String citationNum, String citationDate, String citationTime, String vehicleLicenseNum,
                                        String vehicleModel, String vehicleColor, String parkingLotName, String parkingLotAddress,
                                        String citationCategory) {
-        return executeUpdateOperation(GENERATE_NEW_CITATION_SQL_FILE, citationNum, citationDate, citationTime, vehicleLicenseNum,
+        return executeUpdateOperation(
+                "INSERT INTO Citations VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, false, false)",
+                citationNum, citationDate, citationTime, vehicleLicenseNum,
                 vehicleModel, vehicleColor, parkingLotName, parkingLotAddress, citationCategory);
     }
 
-    public boolean updateCitationInformation(String citationNum, String newCitationDate, String newCitationTime,
-                                             String newVehicleLicenseNum, String newVehicleModel, String newVehicleColor,
-                                             String newParkingLotName, String newParkingLotAddress, String newCategory) {
-        return executeUpdateOperation(UPDATE_CITATION_INFO_SQL_FILE, newCitationDate, newCitationTime, newVehicleLicenseNum,
+    public boolean deleteCitation(String citationNum) {
+        return executeUpdateOperation("DELETE FROM Citations WHERE citationNum = ?", citationNum);
+    }
+
+    public boolean appealCitation(String citationNum) {
+        return executeUpdateOperation("UPDATE Citations SET appealRequested = true WHERE citationNum = ?", citationNum);
+    }
+
+    public boolean payCitation(String citationNum) {
+        return executeUpdateOperation("UPDATE Citations SET paymentStatus = true WHERE citationNum = ?", citationNum);
+    }
+
+    public boolean updateCitation(String citationNum, String newCitationDate, String newCitationTime,
+                                  String newVehicleLicenseNum, String newVehicleModel, String newVehicleColor,
+                                  String newParkingLotName, String newParkingLotAddress, String newCategory) {
+        return executeUpdateOperation(
+                "UPDATE Citations SET citationDate = ?, citationTime = ?, vehicleLicenseNum = ?, " +
+                        "vehicleModel = ?, vehicleColor = ?, parkingLotName = ?, parkingLotAddress = ?, " +
+                        "category = ? WHERE citationNum = ?",
+                newCitationDate, newCitationTime, newVehicleLicenseNum,
                 newVehicleModel, newVehicleColor, newParkingLotName, newParkingLotAddress, newCategory, citationNum);
     }
 
-    private boolean executeUpdateOperation(String sqlFilePath, Object... params) {
-        try {
-        	Connection connection = ParkingLotDB.initializeDatabase();
-            PreparedStatement preparedStatement = getPreparedStatement(connection, sqlFilePath);
+    public boolean detectParkingViolation(String licenseNum, String parkingLotName, String parkingLotAddress, String zoneID) {
+        boolean hasValidPermit = executeDetectViolationOperation(
+                "SELECT count(*) >= 1 AS validPermit " +
+                        "FROM PermitsAssignedVehicles NATURAL JOIN Permits " +
+                        "WHERE licenseNum=? AND parkingLotName=? AND parkingLotAddress=? AND zoneID=? " +
+                        "AND (expirationDate > CURRENT_DATE OR (expirationDate = CURRENT_DATE AND expirationTime > CURRENT_TIME))",
+                licenseNum, parkingLotName, parkingLotAddress, zoneID);
 
-            // Set parameters and execute SQL
-            for (int i = 0; i < params.length; i++) {
-                preparedStatement.setObject(i + 1, params[i]);
+        return hasValidPermit;
+    }
+
+    public boolean updateCitation(String citationNum, String newCitationDate, String newCitationTime,
+                                  String newVehicleLicenseNum, String newVehicleModel, String newVehicleColor,
+                                  String newParkingLotName, String newParkingLotAddress, String newCategory,
+                                  boolean newPaymentStatus, boolean newAppealRequested) {
+        return executeUpdateOperation(
+                "UPDATE Citations SET citationDate = ?, citationTime = ?, vehicleLicenseNum = ?, " +
+                        "vehicleModel = ?, vehicleColor = ?, parkingLotName = ?, parkingLotAddress = ?, " +
+                        "category = ?, paymentStatus = ?, appealRequested = ? WHERE citationNum = ?",
+                newCitationDate, newCitationTime, newVehicleLicenseNum,
+                newVehicleModel, newVehicleColor, newParkingLotName, newParkingLotAddress,
+                newCategory, newPaymentStatus, newAppealRequested, citationNum);
+    }
+
+    private boolean executeUpdateOperation(String sqlQuery, Object... params) {
+        try (Connection connection = ParkingLotDB.initializeDatabase()) {
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)) {
+                // Set parameters and execute SQL
+                for (int i = 0; i < params.length; i++) {
+                    preparedStatement.setObject(i + 1, params[i]);
+                }
+
+                int rowsAffected = preparedStatement.executeUpdate();
+                return rowsAffected > 0;
             }
-
-            int rowsAffected = preparedStatement.executeUpdate();
-            return rowsAffected > 0;
-
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
     }
 
-    private boolean executeDetectViolationOperation(String sqlFilePath, Object... params) {
-        try {
-        	Connection connection = ParkingLotDB.initializeDatabase();
-            PreparedStatement preparedStatement = getPreparedStatement(connection, sqlFilePath);
+    private boolean executeDetectViolationOperation(String sql, Object... params) {
+        try (Connection connection = ParkingLotDB.initializeDatabase()) {
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                // Set parameters and execute SQL
+                for (int i = 0; i < params.length; i++) {
+                    preparedStatement.setObject(i + 1, params[i]);
+                }
 
-            // Set parameters and execute SQL
-            for (int i = 0; i < params.length; i++) {
-                preparedStatement.setObject(i + 1, params[i]);
+                ResultSet resultSet = preparedStatement.executeQuery();
+                return resultSet.next() && resultSet.getBoolean("validPermit");
             }
-
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                return resultSet.getBoolean("validPermit");
-            }
-
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
-
-        return false;
-    }
-
-    private PreparedStatement getPreparedStatement(Connection connection, String sqlFilePath) throws SQLException, IOException {
-        String sqlQuery = new String(Files.readAllBytes(Paths.get(getClass().getResource(sqlFilePath).getFile())));
-        return connection.prepareStatement(sqlQuery);
     }
 }
