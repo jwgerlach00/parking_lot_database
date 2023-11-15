@@ -248,7 +248,37 @@ public class Main {
     }
 
     private static void performSpaceOperations(Space space, Scanner scanner) {
-    	// Enter Space Information
+        while (true) {
+            System.out.println("Space Operations:");
+            System.out.println("1. Enter Space Information");
+            System.out.println("2. Update Space Information");
+            System.out.println("3. Delete Space Information");
+            System.out.println("0. Back to Main Menu");
+
+            int spaceChoice = scanner.nextInt();
+            scanner.nextLine(); // Consume the newline character
+
+            switch (spaceChoice) {
+                case 1:
+                    enterSpaceInfo(space, scanner);
+                    break;
+                case 2:
+                    updateSpaceInfo(space, scanner);
+                    break;
+                case 3:
+                    deleteSpaceInfo(space, scanner);
+                    break;
+                case 0:
+                    System.out.println("Returning to the main menu.");
+                    return;
+                default:
+                    System.out.println("Invalid choice. Please enter a valid option.");
+            }
+        }
+    }
+
+    private static void enterSpaceInfo(Space space, Scanner scanner) {
+        // Enter Space Information
         System.out.println("\nEnter Space Information:");
         System.out.print("Space Number: ");
         int spaceNumber = scanner.nextInt();
@@ -270,7 +300,9 @@ public class Main {
         } else {
             System.out.println("Failed to enter Space information.");
         }
+    }
 
+    private static void updateSpaceInfo(Space space, Scanner scanner) {
         // Update Space Information
         System.out.println("\nEnter Updated Space Information:");
         System.out.print("Space Number: ");
@@ -291,7 +323,9 @@ public class Main {
         } else {
             System.out.println("Failed to update Space information.");
         }
+    }
 
+    private static void deleteSpaceInfo(Space space, Scanner scanner) {
         // Delete Space Information
         System.out.println("\nEnter Space Information to Delete:");
         System.out.print("Space Number: ");
@@ -426,7 +460,36 @@ public class Main {
   
 
     private static void performZoneOperations(Zone zone, Scanner scanner) {
-    	// Accept user input for Zone Information
+        while (true) {
+            System.out.println("Zone Operations:");
+            System.out.println("1. Enter Zone Information");
+            System.out.println("2. Update Zone Information");
+            System.out.println("3. Delete Zone Information");
+            System.out.println("0. Back to Main Menu");
+
+            int zoneChoice = scanner.nextInt();
+            scanner.nextLine(); // Consume the newline character
+
+            switch (zoneChoice) {
+                case 1:
+                    enterZoneInfo(zone, scanner);
+                    break;
+                case 2:
+                    updateZoneInfo(zone, scanner);
+                    break;
+                case 3:
+                    deleteZoneInfo(zone, scanner);
+                    break;
+                case 0:
+                    System.out.println("Returning to the main menu.");
+                    return;
+                default:
+                    System.out.println("Invalid choice. Please enter a valid option.");
+            }
+        }
+    }
+
+    private static void enterZoneInfo(Zone zone, Scanner scanner) {
         System.out.println("\nEnter Zone Information:");
         System.out.print("Zone ID: ");
         String zoneID = scanner.nextLine();
@@ -435,20 +498,25 @@ public class Main {
         System.out.print("Parking Lot Address: ");
         String zoneParkingLotAddress = scanner.nextLine();
 
-        // Enter Zone Information
         boolean enterZoneSuccess = zone.enterZoneInfo(zoneID, zoneParkingLotName, zoneParkingLotAddress);
         if (enterZoneSuccess) {
             System.out.println("Zone information entered successfully.");
         } else {
             System.out.println("Failed to enter Zone information.");
         }
+    }
 
-        // Update Zone Information
+    private static void updateZoneInfo(Zone zone, Scanner scanner) {
         System.out.println("\nEnter Updated Zone Information:");
         System.out.print("Old Zone ID: ");
         String oldZoneID = scanner.nextLine();
         System.out.print("New Zone ID: ");
         String newZoneID = scanner.nextLine();
+
+        System.out.print("Parking Lot Name: ");
+        String zoneParkingLotName = scanner.nextLine();
+        System.out.print("Parking Lot Address: ");
+        String zoneParkingLotAddress = scanner.nextLine();
 
         boolean updateZoneSuccess = zone.updateZoneInfo(oldZoneID, newZoneID, zoneParkingLotName, zoneParkingLotAddress);
         if (updateZoneSuccess) {
@@ -456,11 +524,17 @@ public class Main {
         } else {
             System.out.println("Failed to update Zone information.");
         }
+    }
 
-        // Delete Zone Information
+    private static void deleteZoneInfo(Zone zone, Scanner scanner) {
         System.out.println("\nEnter Zone Information to Delete:");
         System.out.print("Zone ID: ");
         String deleteZoneID = scanner.nextLine();
+
+        System.out.print("Parking Lot Name: ");
+        String zoneParkingLotName = scanner.nextLine();
+        System.out.print("Parking Lot Address: ");
+        String zoneParkingLotAddress = scanner.nextLine();
 
         boolean deleteZoneSuccess = zone.deleteZoneInfo(deleteZoneID, zoneParkingLotName, zoneParkingLotAddress);
         if (deleteZoneSuccess) {
@@ -469,7 +543,8 @@ public class Main {
             System.out.println("Failed to delete Zone information.");
         }
     }
-    
+
+
  
     private static void performVehicleOperations(Vehicle vehicle, Scanner scanner) {
     	while (true) {
