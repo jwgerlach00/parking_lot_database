@@ -56,8 +56,7 @@ CREATE TABLE Permits (
     zoneID CHAR(2),
 	permitType CHAR(13) NOT NULL,
     spaceType VARCHAR(11) NOT NULL,
-	FOREIGN KEY(parkingLotName, parkingLotaddress) REFERENCES ParkingLots(name, address) ON UPDATE CASCADE ON DELETE CASCADE,
-    FOREIGN KEY(zoneID) REFERENCES Zones(zoneID) ON UPDATE CASCADE ON DELETE CASCADE,
+	FOREIGN KEY(parkingLotName, parkingLotaddress, zoneID) REFERENCES Zones(parkingLotName, parkingLotAddress, zoneID) ON UPDATE CASCADE ON DELETE CASCADE,
 	CHECK (permitType IN ('Residential', 'Commuter', 'Peak hours', 'Special event', 'Park & Ride')),
     CHECK (spaceType IN ('Electric', 'Handicap', 'Compact Car', 'Regular')),
     CHECK (expirationDate >= startDate)
