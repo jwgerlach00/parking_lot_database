@@ -380,8 +380,8 @@ public class Main {
         // Enter Permit Information
         System.out.println("\nEnter Permit Information:");
         System.out.print("Permit ID: ");
-        int permitID = scanner.nextInt();
-        scanner.nextLine(); // Consume the newline character
+        String permitID = scanner.nextLine();
+       // scanner.nextLine(); // Consume the newline character
         System.out.print("Start Date: ");
         String startDate = scanner.nextLine();
         System.out.print("Expiration Date: ");
@@ -412,8 +412,8 @@ public class Main {
     private static void updatePermitInfo(Permit permit, Scanner scanner) {
         System.out.println("\nEnter Updated Permit Information:");
         System.out.print("Permit ID to Update: ");
-        int updatePermitID = scanner.nextInt();
-        scanner.nextLine(); // Consume the newline character
+        String updatePermitID = scanner.nextLine();
+       // scanner.nextLine(); // Consume the newline character
         System.out.print("New Permit Type: ");
         String newPermitType = scanner.nextLine();
         System.out.print("New Start Date: ");
@@ -447,8 +447,8 @@ public class Main {
     private static void deletePermitInfo(Permit permit, Scanner scanner) {
         System.out.println("\nEnter Permit ID to Delete:");
         System.out.print("Permit ID: ");
-        int deletePermitID = scanner.nextInt();
-        scanner.nextLine(); // Consume the newline character
+        String deletePermitID = scanner.nextLine();
+        //scanner.nextLine(); // Consume the newline character
 
         boolean deletePermitSuccess = permit.deletePermitInfo(deletePermitID);
 

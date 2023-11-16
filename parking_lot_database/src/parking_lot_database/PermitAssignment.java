@@ -7,31 +7,44 @@ import java.sql.SQLException;
 
 public class PermitAssignment {
 
-    public boolean assignPermitToDrivers(String driverID, String permitID) {
-        try {
-            Connection connection = ParkingLotDB.initializeDatabase();
-            String driverStatus = getDriverStatus(driverID);
+	public boolean assignPermitToDrivers(String driverID, String permitID) {
+	    try {
+	        Connection connection = ParkingLotDB.initializeDatabase();
+	        String driverStatus = getDriverStatus(driverID);
 
-            if (driverStatus != null) {
-                String sqlQuery = getSqlQuery(driverStatus);
+	        if (driverStatus != null) {
+	            String sqlQuery = getSqlQuery(driverStatus);
 
-                try (PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)) {
-                    preparedStatement.setString(1, driverID);
-                    preparedStatement.setString(2, permitID);
+	            try (PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)) {
+	                preparedStatement.setString(1, driverID);
+	                preparedStatement.setString(2, permitID);
 
-                    int rowsAffected = preparedStatement.executeUpdate();
-                    return rowsAffected > 0;
-                }
-            } else {
-                System.out.println("Driver not found with ID: " + driverID);
-                return false;
-            }
+	                // Set additional placeholders based on the driver status
+	                if ("E".equals(driverStatus)) {
+	                    for (int i = 3; i <= 6; i++) {
+	                        preparedStatement.setString(i, driverID);
+	                    }
+	                } else if ("S".equals(driverStatus) || "V".equals(driverStatus)) {
+	                    // Adjust the number of placeholders accordingly
+	                    for (int i = 3; i <= 4; i++) {
+	                        preparedStatement.setString(i, driverID);
+	                    }
+	                }
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
+	                int rowsAffected = preparedStatement.executeUpdate();
+	                return rowsAffected > 0;
+	            }
+	        } else {
+	            System.out.println("Driver not found with ID: " + driverID);
+	            return false;
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        return false;
+	    }
+	}
+
 
     private String getDriverStatus(String driverID) {
         try {

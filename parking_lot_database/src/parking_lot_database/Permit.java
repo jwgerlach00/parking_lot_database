@@ -5,7 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class Permit {
-    public boolean enterPermitInfo(int permitID, String startDate, String expirationDate, String expirationTime,
+    public boolean enterPermitInfo(String permitID, String startDate, String expirationDate, String expirationTime,
                                    String parkingLotName, String parkingLotAddress, String zoneID,
                                    String permitType, String spaceType) {
         try (Connection connection = ParkingLotDB.initializeDatabase()) {
@@ -31,7 +31,7 @@ public class Permit {
         }
     }
 
-    public boolean updatePermitInfo(int permitID, String newPermitType, String newStartDate, String newExpirationDate,
+    public boolean updatePermitInfo(String permitID, String newPermitType, String newStartDate, String newExpirationDate,
                                     String newExpirationTime, String parkingLotName, String parkingLotAddress,
                                     String zoneID, String newSpaceType) {
         try (Connection connection = ParkingLotDB.initializeDatabase()) {
@@ -59,7 +59,7 @@ public class Permit {
         }
     }
 
-    public boolean deletePermitInfo(int permitID) {
+    public boolean deletePermitInfo(String permitID) {
         try (Connection connection = ParkingLotDB.initializeDatabase()) {
             connection.setAutoCommit(false); // Start transaction
 

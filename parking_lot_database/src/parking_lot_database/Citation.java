@@ -24,7 +24,7 @@ public class Citation {
     }
 
     public boolean payCitation(String citationNum) {
-        return executeUpdateOperation("UPDATE Citations SET paymentStatus = true WHERE citationNum = ?", citationNum);
+        return executeUpdateOperation("UPDATE Citations SET paid = true WHERE citationNum = ?", citationNum);
     }
 
     public boolean updateCitation(String citationNum, String newCitationDate, String newCitationTime,
