@@ -12,21 +12,27 @@ public class Space {
     	return executeUpdateOperation(
     	        "INSERT INTO Spaces VALUES (?, ?, ?, ?, ?, ?)",
     	        spaceNum, parkingLotName, parkingLotAddress, zoneID, spaceType, availabilityStatus);
-    	
-
     }
 
-    public boolean updateSpaceInfo(int spaceNum, String newSpaceType, String newZoneID,
+    public boolean updateSpaceInfo(int spaceNum, String newSpaceType, String newZoneID, String newAvailabilityStatus,
                                    String parkingLotName, String parkingLotAddress) {
         return executeUpdateOperation(
-                "UPDATE Spaces SET spaceType=?, zoneID=? WHERE spaceNum=? AND parkingLotName=? AND parkingLotAddress=?",
-                newSpaceType, newZoneID, spaceNum, parkingLotName, parkingLotAddress);
+                "UPDATE Spaces SET spaceType=?, zoneID=?, availabilityStatus=? WHERE spaceNum=? AND parkingLotName=? AND parkingLotAddress=?",
+                newSpaceType, newZoneID, newAvailabilityStatus, spaceNum, parkingLotName, parkingLotAddress);
     }
 
     public boolean deleteSpaceInfo(int spaceNum, String parkingLotName, String parkingLotAddress) {
         return executeUpdateOperation(
                 "DELETE FROM Spaces WHERE spaceNum=? AND parkingLotName=? AND parkingLotAddress=?",
                 spaceNum, parkingLotName, parkingLotAddress);
+    }
+    
+    public boolean assignTypeToGivenSpace(int spaceNum, String newSpaceType, String parkingLotName, String parkingLotAddress) {
+    	return executeUpdateOperation(
+                "UPDATE Spaces " + 
+                "SET spaceType=?" +
+                "WHERE spaceNum=? AND parkingLotName=? AND parkingLotAddress=?",
+                newSpaceType, spaceNum, parkingLotName, parkingLotAddress);
     }
 
     private boolean executeUpdateOperation(String sql, Object... params) {

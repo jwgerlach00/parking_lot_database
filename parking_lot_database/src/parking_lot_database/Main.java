@@ -254,6 +254,7 @@ public class Main {
             System.out.println("1. Enter Space Information");
             System.out.println("2. Update Space Information");
             System.out.println("3. Delete Space Information");
+            System.out.println("4. Assign a Type to a Given Space");
             System.out.println("0. Back to Main Menu");
 
             int spaceChoice = scanner.nextInt();
@@ -269,12 +270,35 @@ public class Main {
                 case 3:
                     deleteSpaceInfo(space, scanner);
                     break;
+                case 4:
+                	assignTypeToGivenSpace(space, scanner);
                 case 0:
                     System.out.println("Returning to the main menu.");
                     return;
                 default:
                     System.out.println("Invalid choice. Please enter a valid option.");
             }
+        }
+    }
+    
+    private static void assignTypeToGivenSpace(Space space, Scanner scanner) {
+    	// Enter Space Information
+        System.out.println("\nEnter Space Information:");
+        System.out.print("Space Number: ");
+        int spaceNumber = scanner.nextInt();
+        scanner.nextLine(); // Consume the newline character
+        System.out.print("New space Type: ");
+        String newSpaceType = scanner.nextLine();
+        System.out.print("Parking Lot Name: ");
+        String spaceParkingLotName = scanner.nextLine();
+        System.out.print("Parking Lot Address: ");
+        String spaceParkingLotAddress = scanner.nextLine();
+        
+        boolean enterSpaceSuccess = space.assignTypeToGivenSpace(spaceNumber, newSpaceType, spaceParkingLotName, spaceParkingLotAddress);
+        if (enterSpaceSuccess) {
+            System.out.println("Space information entered successfully.");
+        } else {
+            System.out.println("Failed to enter Space information.");
         }
     }
 
@@ -314,12 +338,14 @@ public class Main {
         String updateSpaceType = scanner.nextLine();
         System.out.print("New Zone ID: ");
         String updateSpaceZoneID = scanner.nextLine();
+        System.out.print("New Space Availability Status: ");
+        String updateSpaceAvailabilityStatus = scanner.nextLine();
         System.out.print("Parking Lot Name: ");
         String updateSpaceParkingLotName = scanner.nextLine();
         System.out.print("Parking Lot Address: ");
         String updateSpaceParkingLotAddress = scanner.nextLine();
 
-        boolean updateSpaceSuccess = space.updateSpaceInfo(updateSpaceNumber, updateSpaceType, updateSpaceZoneID, updateSpaceParkingLotName, updateSpaceParkingLotAddress);
+        boolean updateSpaceSuccess = space.updateSpaceInfo(updateSpaceNumber, updateSpaceType, updateSpaceZoneID, updateSpaceAvailabilityStatus, updateSpaceParkingLotName, updateSpaceParkingLotAddress);
         if (updateSpaceSuccess) {
             System.out.println("Space information updated successfully.");
         } else {
