@@ -807,12 +807,17 @@ public class Main {
         String parkingLotAddress = scanner.nextLine();
         System.out.print("Enter Zone ID: ");
         String zoneID = scanner.nextLine();
-
-        boolean violationDetected = citation.detectParkingViolation(licenseNum, parkingLotName, parkingLotAddress, zoneID);
-        if (violationDetected) {
-            System.out.println("Parking violation detected.");
-        } else {
+        System.out.print("Enter Current Date (YYYY-MM-DD): ");
+        String currentDate = scanner.nextLine();
+        System.out.print("Enter Current Time (HH:mm:ss): ");
+        String currentTime = scanner.nextLine();
+        
+        boolean hasValidPermit = citation.detectParkingViolation(licenseNum, parkingLotName, parkingLotAddress, zoneID,
+        		currentDate, currentTime);
+        if (hasValidPermit) {
             System.out.println("No parking violation detected.");
+        } else {
+        	System.out.println("Parking violation detected.");
         }
     }
 
