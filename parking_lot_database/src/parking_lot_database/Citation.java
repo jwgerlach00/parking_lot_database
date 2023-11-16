@@ -61,8 +61,7 @@ public class Citation {
         }
     }
 
-    public boolean detectParkingViolation(String licenseNum, String parkingLotName, String parkingLotAddress, String zoneID,
-    				                      String currentDate, String currentTime) {
+    public boolean detectParkingViolation(String licenseNum, String parkingLotName, String parkingLotAddress, String zoneID) {
         try (Connection connection = ParkingLotDB.initializeDatabase()) {
             connection.setAutoCommit(false); // Start transaction
 
@@ -71,8 +70,8 @@ public class Citation {
                     "SELECT count(*) >= 1 AS validPermit " +
                             "FROM PermitsAssignedVehicles NATURAL JOIN Permits " +
                             "WHERE licenseNum=? AND parkingLotName=? AND parkingLotAddress=? AND zoneID=? " +
-                            "AND (expirationDate > ? OR (expirationDate = ? AND expirationTime >= ?))",
-                    licenseNum, parkingLotName, parkingLotAddress, zoneID, currentDate, currentDate, currentTime);
+                            "AND (expirationDate > CURRENT_DATE OR (expirationDate = CURRENT_DATE AND expirationTime > CURRENT_TIME))",
+                    licenseNum, parkingLotName, parkingLotAddress, zoneID);
 
             // If successful, commit the transaction
             if (hasValidPermit) {
