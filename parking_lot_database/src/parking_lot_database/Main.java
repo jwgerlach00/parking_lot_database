@@ -3,12 +3,13 @@ package parking_lot_database;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Scanner;
+import java.util.InputMismatchException;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-  
+    	Scanner scanner = null;
         try {
-        	Scanner scanner = new Scanner(System.in);
+        	 scanner = new Scanner(System.in);
             // Initialize database connection
             ParkingLotDB.initializeDatabase();
 
@@ -22,57 +23,68 @@ public class Main {
             PermitAssignment permitAssignment = new PermitAssignment();
             Citation citation = new Citation();
             ReportGenerator reportGenerator = new ReportGenerator();
+            PermitAssignedVehicle permitAssignmentVehicle = new PermitAssignedVehicle();
             //Scanner scanner = new Scanner(System.in);
 
             while (true) {
-                System.out.println("Choose an operation:");
-                System.out.println("1. Driver Operations");
-                System.out.println("2. Parking Lot Operations");
-                System.out.println("3. Space Operations");
-                System.out.println("4. Permit Operations");
-                System.out.println("5. Zone Operations");
-                System.out.println("6. Vehicle Operations");
-                System.out.println("7. Permit Assignment Operations");
-                System.out.println("8. Citation Operations"); 
-                System.out.println("9. Report Operations");
-                System.out.println("0. Exit");
+            	try {
+            		
+                    System.out.println("Choose an operation:");
+                    System.out.println("1. Driver Operations");
+                    System.out.println("2. Parking Lot Operations");
+                    System.out.println("3. Space Operations");
+                    System.out.println("4. Permit Operations");
+                    System.out.println("5. Zone Operations");
+                    System.out.println("6. Vehicle Operations");
+                    System.out.println("7. Permit Assignment Operations");
+                    System.out.println("8. Citation Operations"); 
+                    System.out.println("9. Report Operations");
+                    System.out.println("10. Assign Permit to Vehicle");
+                    System.out.println("0. Exit");
 
-                int choice = scanner.nextInt();
-                scanner.nextLine(); // Consume the newline character
+                    int choice = scanner.nextInt();
+                    scanner.nextLine(); // Consume the newline character
 
-                switch (choice) {
-                    case 1:
-                        performDriverOperations(driver, scanner);
-                        break;
-                    case 2:
-                        performParkingLotOperations(parkingLot, scanner);
-                        break;
-                    case 3:
-                        performSpaceOperations(space, scanner);
-                        break;
-                    case 4:
-                        performPermitOperations(permit, scanner);
-                        break;
-                    case 5:
-                        performZoneOperations(zone, scanner);
-                        break;
-                    case 6:
-                        performVehicleOperations(vehicle, scanner);
-                        break;
-                    case 7:
-                        performPermitAssignmentOperations(permitAssignment, scanner);
-                        break;
-                    case 8:
-                        performCitationOperations(citation, scanner);
-                        break;
-                    case 9:
-                        performReportOperations(reportGenerator, scanner); 
-                        break;
-                    case 0:
-                        System.out.println("Exiting program.");
-                        return;
-                    default:
-                        System.out.println("Invalid choice. Please enter a valid option.");
+                    switch (choice) {
+                        case 1:
+                            performDriverOperations(driver, scanner);
+                            break;
+                        case 2:
+                            performParkingLotOperations(parkingLot, scanner);
+                            break;
+                        case 3:
+                            performSpaceOperations(space, scanner);
+                            break;
+                        case 4:
+                            performPermitOperations(permit, scanner);
+                            break;
+                        case 5:
+                            performZoneOperations(zone, scanner);
+                            break;
+                        case 6:
+                            performVehicleOperations(vehicle, scanner);
+                            break;
+                        case 7:
+                            performPermitAssignmentOperations(permitAssignment, scanner);
+                            break;
+                        case 8:
+                            performCitationOperations(citation, scanner);
+                            break;
+                        case 9:
+                            performReportOperations(reportGenerator, scanner); 
+                            break;
+                        case 10:
+                        	performVehiclePermitAssignmentOperations(permitAssignmentVehicle, scanner);
+                        	break;
+                        case 0:
+                            System.out.println("Exiting program.");
+                            return;
+                        default:
+                            System.out.println("Invalid choice. Please enter a valid option.");
+                    }
+            	}catch (InputMismatchException ex) {
+                    System.out.println("Invalid input. Please enter a valid integer.");
+                    scanner.nextLine(); // Consume the invalid input
                 }
             }
 
@@ -81,12 +93,32 @@ public class Main {
             e.printStackTrace();
             System.out.println("An unexpected error occurred while processing information.");
         } finally {
+        	
+        	// Close scanner
+        	scanner.close();
+        	
             // Close database connection
             ParkingLotDB.closeDatabase();
         }
     }
 
-    private static void performDriverOperations(Driver driver, Scanner scanner) {
+    private static void performVehiclePermitAssignmentOperations(PermitAssignedVehicle permitAssignmentVehicle,
+			Scanner scanner) {
+    	System.out.print("Enter Permit ID for Vehicle Assignment: ");
+        String permitID = scanner.nextLine();
+        System.out.print("Enter Vehicle License Number: ");
+        String licenseNum = scanner.nextLine();
+
+        boolean assignVehicleSuccess = permitAssignmentVehicle.assignVehicleToPermit(permitID, licenseNum);
+        if (assignVehicleSuccess) {
+            System.out.println("Vehicle assigned to permit successfully.");
+        } else {
+            System.out.println("Failed to assign vehicle to permit.");
+        }
+    }
+		
+
+	private static void performDriverOperations(Driver driver, Scanner scanner) {
         while (true) {
             System.out.println("Driver Operations:");
             System.out.println("1. Enter Driver Information");
@@ -272,6 +304,7 @@ public class Main {
                     break;
                 case 4:
                 	assignTypeToGivenSpace(space, scanner);
+                	break;
                 case 0:
                     System.out.println("Returning to the main menu.");
                     return;
@@ -280,7 +313,7 @@ public class Main {
             }
         }
     }
-    
+
     private static void assignTypeToGivenSpace(Space space, Scanner scanner) {
     	// Enter Space Information
         System.out.println("\nEnter Space Information:");
@@ -293,7 +326,7 @@ public class Main {
         String spaceParkingLotName = scanner.nextLine();
         System.out.print("Parking Lot Address: ");
         String spaceParkingLotAddress = scanner.nextLine();
-        
+
         boolean enterSpaceSuccess = space.assignTypeToGivenSpace(spaceNumber, newSpaceType, spaceParkingLotName, spaceParkingLotAddress);
         if (enterSpaceSuccess) {
             System.out.println("Space information entered successfully.");
@@ -301,7 +334,7 @@ public class Main {
             System.out.println("Failed to enter Space information.");
         }
     }
-
+    
     private static void enterSpaceInfo(Space space, Scanner scanner) {
         // Enter Space Information
         System.out.println("\nEnter Space Information:");
@@ -743,6 +776,7 @@ public class Main {
                     break;
                 case 7:
                 	payCitationIfAppealed(citation, scanner);
+                	break;
                 case 0:
                     System.out.println("Returning to the main menu.");
                     return;
@@ -881,7 +915,7 @@ public class Main {
             System.out.println("Failed to update citation information.");
         }
     }
-    
+
     private static void payCitationIfAppealed(Citation citation, Scanner scanner) {
     	System.out.print("Enter Citation Number to Pay if Appealed: ");
         String citationNum = scanner.nextLine();
@@ -896,8 +930,7 @@ public class Main {
             System.out.println("Failed to update citation information.");
         }
     }
-
-
+    
     private static void performReportOperations(ReportGenerator reportGenerator, Scanner scanner) {
         while (true) {
             System.out.println("Report Operations:");

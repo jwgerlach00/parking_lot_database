@@ -12,12 +12,14 @@ public class Space {
     	return executeUpdateOperation(
     	        "INSERT INTO Spaces VALUES (?, ?, ?, ?, ?, ?)",
     	        spaceNum, parkingLotName, parkingLotAddress, zoneID, spaceType, availabilityStatus);
+    	
+
     }
 
     public boolean updateSpaceInfo(int spaceNum, String newSpaceType, String newZoneID, String newAvailabilityStatus,
                                    String parkingLotName, String parkingLotAddress) {
         return executeUpdateOperation(
-                "UPDATE Spaces SET spaceType=?, zoneID=?, availabilityStatus=? WHERE spaceNum=? AND parkingLotName=? AND parkingLotAddress=?",
+        		"UPDATE Spaces SET spaceType=?, zoneID=?, availabilityStatus=? WHERE spaceNum=? AND parkingLotName=? AND parkingLotAddress=?",
                 newSpaceType, newZoneID, newAvailabilityStatus, spaceNum, parkingLotName, parkingLotAddress);
     }
 
@@ -26,7 +28,7 @@ public class Space {
                 "DELETE FROM Spaces WHERE spaceNum=? AND parkingLotName=? AND parkingLotAddress=?",
                 spaceNum, parkingLotName, parkingLotAddress);
     }
-    
+
     public boolean assignTypeToGivenSpace(int spaceNum, String newSpaceType, String parkingLotName, String parkingLotAddress) {
     	return executeUpdateOperation(
                 "UPDATE Spaces " + 
@@ -34,7 +36,7 @@ public class Space {
                 "WHERE spaceNum=? AND parkingLotName=? AND parkingLotAddress=?",
                 newSpaceType, spaceNum, parkingLotName, parkingLotAddress);
     }
-
+    
     private boolean executeUpdateOperation(String sql, Object... params) {
         try {
             Connection connection = ParkingLotDB.initializeDatabase();
