@@ -947,6 +947,7 @@ public class Main {
             System.out.println("4. Count Employees Permits by Zone");
             System.out.println("5. Get Permit Info by Driver ID or Phone Num");
             System.out.println("6. Return Available Space by Type in Lot");
+            System.out.println("7. Query for Citation Fees");
             System.out.println("0. Back to Main Menu");
 
             int reportChoice = scanner.nextInt();
@@ -971,6 +972,9 @@ public class Main {
                 case 6:
                     returnAvailableSpaceByTypeInLot(reportGenerator, scanner);
                     break;
+                case 7:
+                    queryForCitationFees(reportGenerator); 
+                    break;
                 case 0:
                     System.out.println("Returning to the main menu.");
                     return;
@@ -978,6 +982,10 @@ public class Main {
                     System.out.println("Invalid choice. Please enter a valid option.");
             }
         }
+    }
+    
+    private static void queryForCitationFees(ReportGenerator reportGenerator) {
+        reportGenerator.queryForCitationFees();
     }
 
     private static void generateTotalCitationsReport(ReportGenerator reportGenerator, Scanner scanner) {

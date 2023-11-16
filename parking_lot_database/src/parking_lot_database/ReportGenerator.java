@@ -56,6 +56,15 @@ public class ReportGenerator {
                         "LIMIT 1;",
                 spaceType, parkingLotName, parkingLotAddress);
     }
+    
+    public void queryForCitationFees() {
+        executeAndPrintQuery(
+                "SELECT spaceType, vehicleLicenseNum, citationNum, category, " +
+                        "CASE WHEN spaceType = 'Handicap' THEN fee / 2 ELSE fee END AS adjustedFee " +
+                        "FROM ((Vehicles NATURAL JOIN PermitsAssignedVehicles NATURAL JOIN Permits) " +
+                        "RIGHT JOIN Citations ON licenseNum = vehicleLicenseNum) " +
+                        "NATURAL JOIN CitationCategoryFees");
+    }
 
     private void executeAndPrintQuery(String query, Object... params) {
         try (Connection connection = ParkingLotDB.initializeDatabase();
