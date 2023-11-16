@@ -716,6 +716,7 @@ public class Main {
             System.out.println("4. Drivers Pay Citations");
             System.out.println("5. Generate New Citation");
             System.out.println("6. Update Citation Information");
+            System.out.println("7. Pay Citation if Appealed");
             System.out.println("0. Back to Main Menu");
 
             int citationChoice = scanner.nextInt();
@@ -740,6 +741,8 @@ public class Main {
                 case 6:
                     updateCitationInformation(citation, scanner);
                     break;
+                case 7:
+                	payCitationIfAppealed(citation, scanner);
                 case 0:
                     System.out.println("Returning to the main menu.");
                     return;
@@ -870,6 +873,21 @@ public class Main {
         boolean updateSuccess = citation.updateCitation(
                 citationNum, newCitationDate, newCitationTime, newVehicleLicenseNum,
                 newVehicleModel, newVehicleColor, newParkingLotName, newParkingLotAddress, newCategory
+        );
+
+        if (updateSuccess) {
+            System.out.println("Citation information updated successfully.");
+        } else {
+            System.out.println("Failed to update citation information.");
+        }
+    }
+    
+    private static void payCitationIfAppealed(Citation citation, Scanner scanner) {
+    	System.out.print("Enter Citation Number to Pay if Appealed: ");
+        String citationNum = scanner.nextLine();
+
+        boolean updateSuccess = citation.payCitationIfAppealed(
+                citationNum
         );
 
         if (updateSuccess) {

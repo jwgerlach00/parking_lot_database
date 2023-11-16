@@ -22,6 +22,10 @@ public class Citation {
     public boolean appealCitation(String citationNum) {
         return executeUpdateOperation("UPDATE Citations SET appealRequested = true WHERE citationNum = ?", citationNum);
     }
+    
+    public boolean payCitationIfAppealed(String citationNum) {
+    	return executeUpdateOperation("UPDATE Citations SET paid=true WHERE citationNum=? AND appealRequested=true", citationNum);
+    }
 
     public boolean payCitation(String citationNum) {
         return executeUpdateOperation("UPDATE Citations SET paid = true WHERE citationNum = ?", citationNum);
