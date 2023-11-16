@@ -908,10 +908,17 @@ public class Main {
         String newParkingLotAddress = scanner.nextLine();
         System.out.print("New Category: ");
         String newCategory = scanner.nextLine();
+        System.out.print("New Paid: ");
+        boolean newPaid = scanner.nextBoolean();
+        scanner.nextLine(); // Consume the newline character
+        System.out.print("New Appeal Requested: ");
+        boolean newAppealRequested = scanner.nextBoolean();
+        scanner.nextLine(); // Consume the newline character
 
         boolean updateSuccess = citation.updateCitation(
                 citationNum, newCitationDate, newCitationTime, newVehicleLicenseNum,
-                newVehicleModel, newVehicleColor, newParkingLotName, newParkingLotAddress, newCategory
+                newVehicleModel, newVehicleColor, newParkingLotName, newParkingLotAddress, newCategory,
+                newPaid, newAppealRequested
         );
 
         if (updateSuccess) {

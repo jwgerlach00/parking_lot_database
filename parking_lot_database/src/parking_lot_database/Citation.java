@@ -33,7 +33,8 @@ public class Citation {
 
     public boolean updateCitation(String citationNum, String newCitationDate, String newCitationTime,
                                   String newVehicleLicenseNum, String newVehicleModel, String newVehicleColor,
-                                  String newParkingLotName, String newParkingLotAddress, String newCategory) {
+                                  String newParkingLotName, String newParkingLotAddress, String newCategory,
+                                  Boolean newPaid, Boolean newAppealRequested) {
         try (Connection connection = ParkingLotDB.initializeDatabase()) {
             connection.setAutoCommit(false); // Start transaction
 
@@ -41,9 +42,10 @@ public class Citation {
                     connection,
                     "UPDATE Citations SET citationDate = ?, citationTime = ?, vehicleLicenseNum = ?, " +
                             "vehicleModel = ?, vehicleColor = ?, parkingLotName = ?, parkingLotAddress = ?, " +
-                            "category = ? WHERE citationNum = ?",
+                            "category = ?, paid = ?, appealRequested = ? WHERE citationNum = ?",
                     newCitationDate, newCitationTime, newVehicleLicenseNum,
-                    newVehicleModel, newVehicleColor, newParkingLotName, newParkingLotAddress, newCategory, citationNum);
+                    newVehicleModel, newVehicleColor, newParkingLotName, newParkingLotAddress,
+                    newCategory, newPaid, newAppealRequested, citationNum);
 
             // If successful, commit the transaction
             if (result) {
