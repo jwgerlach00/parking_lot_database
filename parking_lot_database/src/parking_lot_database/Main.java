@@ -108,7 +108,7 @@ public class Main {
         String permitID = scanner.nextLine();
         System.out.print("Enter Vehicle License Number: ");
         String licenseNum = scanner.nextLine();
-
+        
         boolean assignVehicleSuccess = permitAssignmentVehicle.assignVehicleToPermit(permitID, licenseNum);
         if (assignVehicleSuccess) {
             System.out.println("Vehicle assigned to permit successfully.");

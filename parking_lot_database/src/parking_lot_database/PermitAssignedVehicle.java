@@ -6,98 +6,140 @@ import java.sql.SQLException;
 import java.sql.ResultSet;
 
 public class PermitAssignedVehicle {
+	 public static Connection conn;
 
-    public boolean assignVehicleToPermit(String permitID, String licenseNum) {
-        Connection connection = null;
-        try {
-            connection = ParkingLotDB.initializeDatabase();
+	    // Initialize the database connection
+	    static {
+	        try {
+	            conn = ParkingLotDB.initializeDatabase();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	    
+    public boolean assignVehicleToPermit(String permit_id, String license) {
+    	
+		// TODO Auto-generated method stub
+		try {
 
-            // Disable auto-commit to start a transaction
-            connection.setAutoCommit(false);
+		
+		
+		int howmnayLicTotal=howManyLic(permit_id);
+		int howmanythere=getHowManythere(permit_id);
+		if(howmanythere<howmnayLicTotal) {
+		     String query = "INSERT INTO PermitsAssignedVehicles VALUES (?, ?)";
+             PreparedStatement pstmt = conn.prepareStatement(query);
+             pstmt.setString(1, permit_id);
+             pstmt.setString(2, license);
 
-            String driverStatus = getDriverStatusForPermit(permitID);
+             pstmt.executeUpdate();
+             pstmt.close();
 
-            if (driverStatus != null) {
-                String sqlQuery = getSqlQueryForStatus(driverStatus);
+             // Display the permit information (you can customize this part)
+             System.out.println("Permit ID " + permit_id + " assigned to License " + license);
 
-                try (PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)) {
-                    preparedStatement.setString(1, permitID);
-                    preparedStatement.setString(2, licenseNum);
+             System.out.println("Permits Assigned Successfully");
+             return true;
+         } else {
+             System.out.println("Permits are fully assigned for the License. Cannot assign more permits.");
+             return false;
+         }
 
-                    for (int i = 3; i <= 4; i++) {
-                        preparedStatement.setString(i, permitID);
-                    }
+   
+		  } catch (Exception e) {
+	            e.printStackTrace();
+	            return false;
+	        }
+		}
+	
 
-                    int rowsAffected = preparedStatement.executeUpdate();
+	private static int getHowManythere(String permit_id) {
+		// TODO Auto-generated method stub
+		  try {
+	            String query = "select Count(*) from PermitsAssignedVehicles where permitID = ?";
+	            PreparedStatement pstmt = conn.prepareStatement(query);
+	            pstmt.setString(1, permit_id);
 
-                    // Commit the transaction if everything is successful
-                    connection.commit();
+	            ResultSet rs = pstmt.executeQuery();
 
-                    return rowsAffected > 0;
-                }
-            } else {
-                System.out.println("No driver found for permit with ID: " + permitID);
-                return false;
-            }
+	            if (rs.next()) {
+	                 return rs.getInt(1);
+	            }
 
-        } catch (SQLException e) {
-            // Rollback the transaction in case of an exception
-            if (connection != null) {
-                try {
-                    connection.rollback();
-                } catch (SQLException rollbackException) {
-                    rollbackException.printStackTrace();
-                }
-            }
-            e.printStackTrace();
-            return false;
-        } finally {
-            // Enable auto-commit and close the connection
-            if (connection != null) {
-                try {
-                    connection.setAutoCommit(true);
-                    connection.close();
-                } catch (SQLException closeException) {
-                    closeException.printStackTrace();
-                }
-            }
+	            pstmt.close();
+	            // Do not close the connection here, as it will be closed in the calling method
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+
+	      
+		return 0;
+	}
+
+	private static int howManyLic(String permit_id) {
+		// TODO Auto-generated method stub
+		
+		 String DriverID = getDriverID(permit_id);
+		 String Status= getStatus(DriverID);
+		 if(Status.equals("E"))
+			 return 2;
+		 else if(Status.equals("S"))
+		     return 1;
+		 else if(Status.equals("V"))
+		     return 1;
+		 
+		return 0;
+	}
+   
+
+	private static String getDriverID(String permit_id) {
+		// TODO Auto-generated method stub 
+		try {
+        String query = "SELECT driverID FROM DriversObtainPermits WHERE permitID = ?";
+        PreparedStatement pstmt = conn.prepareStatement(query);
+        pstmt.setString(1, permit_id);
+
+        ResultSet rs = pstmt.executeQuery();
+
+        if (rs.next()) {
+            return rs.getString("driverID");
         }
+
+        pstmt.close();
+        // Do not close the connection here, as it will be closed in the calling method
+    } catch (Exception e) {
+        e.printStackTrace();
     }
 
-    private String getDriverStatusForPermit(String permitID) {
-        try {
-            Connection connection = ParkingLotDB.initializeDatabase();
-            String sqlQuery = "SELECT status FROM Drivers WHERE id IN (SELECT driverID FROM DriversObtainPermits WHERE permitID = ?)";
+    return null;
+	
+	}
 
-            try (PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)) {
-                preparedStatement.setString(1, permitID);
 
-                ResultSet resultSet = preparedStatement.executeQuery();
-                if (resultSet.next()) {
-                    return resultSet.getString("status");
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+	private static String getStatus(String driverID) {
+		// TODO Auto-generated method stub
+	
+			// TODO Auto-generated method stub
+	    	try {
+	        String query = "SELECT status FROM Drivers WHERE id = ?";
+	        PreparedStatement pstmt = conn.prepareStatement(query);
+	        pstmt.setString(1, driverID);
 
-    private String getSqlQueryForStatus(String driverStatus) {
-        switch (driverStatus) {
-            case "E":
-                return "INSERT INTO PermitsAssignedVehicles (permitID, licenseNum) " +
-                        "SELECT ?, ? " +
-                        "WHERE NOT EXISTS (SELECT 1 FROM PermitsAssignedVehicles WHERE permitID = ?) " +
-                        "AND (SELECT COUNT(*) FROM PermitsAssignedVehicles WHERE permitID = ?) < 2";
-            case "S":
-            case "V":
-                return "INSERT INTO PermitsAssignedVehicles (permitID, licenseNum) " +
-                        "SELECT ?, ? " +
-                        "WHERE NOT EXISTS (SELECT 1 FROM PermitsAssignedVehicles WHERE permitID = ?) " +
-                        "AND (SELECT COUNT(*) FROM PermitsAssignedVehicles WHERE permitID = ?) < 1";
-            default:
-                throw new IllegalArgumentException("Invalid driver status: " + driverStatus);
-        }
-    }
+	        ResultSet rs = pstmt.executeQuery();
+
+	        if (rs.next()) {
+	            return rs.getString("status");
+	        }
+
+	        pstmt.close();
+	        // Do not close the connection here, as it will be closed in the calling method
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+			return null;
+		}
+
+
+
 }
