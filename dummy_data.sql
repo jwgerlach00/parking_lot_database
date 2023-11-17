@@ -69,7 +69,7 @@ INSERT INTO DriversObtainPermits VALUES
     ('9194789124', 'VCX1SE');
 
 INSERT INTO PermitsAssignedVehicles VALUES
-	('SST1R', 'SBF'),
+	('VSBF1C', 'SBF'),
     ('EJC1R', 'Clay1'),
     ('EJH2C', 'Hicks1'),
     ('EIG3C', 'Garcia1'),
