@@ -19,6 +19,8 @@ public class PermitAssignment {
     static {
         try {
             conn = ParkingLotDB.initializeDatabase();
+            //
+            System.out.println("@1@");
         } catch (SQLException e) {
             e.printStackTrace();
         }

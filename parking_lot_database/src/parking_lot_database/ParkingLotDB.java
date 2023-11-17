@@ -8,16 +8,21 @@ public class ParkingLotDB {
     private static Connection conn;
 
     public static Connection initializeDatabase() throws SQLException {
-        String url = "jdbc:mariadb://classdb2.csc.ncsu.edu:3306/skhanap2";
-        String user = "skhanap2";
-        String password = "200536582";
+    	 if (conn == null || conn.isClosed()) {
+             String url = "jdbc:mariadb://classdb2.csc.ncsu.edu:3306/skhanap2";
+             String user = "skhanap2";
+             String password = "200536582";
 
-        conn = DriverManager.getConnection(url, user, password);
-        
-        System.out.println("Successfully connected to DB");
-        
-        return conn;
-    }
+             conn = DriverManager.getConnection(url, user, password);
+
+             System.out.println("Successfully connected to DB");
+         } else {
+        	 
+             System.out.println("Already connected to DB");
+         }
+
+         return conn;
+     }
 
     public static void closeDatabase() {
         try {
