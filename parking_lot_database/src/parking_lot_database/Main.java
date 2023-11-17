@@ -472,29 +472,9 @@ public class Main {
         System.out.println("\nEnter Updated Permit Information:");
         System.out.print("Permit ID to Update: ");
         String updatePermitID = scanner.nextLine();
-       // scanner.nextLine(); // Consume the newline character
-        System.out.print("New Permit Type: ");
-        String newPermitType = scanner.nextLine();
-        System.out.print("New Start Date: ");
-        String newStartDate = scanner.nextLine();
-        System.out.print("New Expiration Date: ");
-        String newExpirationDate = scanner.nextLine();
-        System.out.print("New Expiration Time: ");
-        String newExpirationTime = scanner.nextLine();
-        System.out.print("New Space Type: ");
-        String newSpaceType = scanner.nextLine();
+       
 
-        // You need to obtain these values from user input or other sources
-        System.out.print("New Parking Lot Name: ");
-        String permitParkingLotName = scanner.nextLine();
-        System.out.print("New Parking Lot Address: ");
-        String permitParkingLotAddress = scanner.nextLine();
-        System.out.print("New Zone ID: ");
-        String permitZoneID = scanner.nextLine();
-
-        boolean updatePermitSuccess = permit.updatePermitInfo(updatePermitID, newPermitType, newStartDate,
-                newExpirationDate, newExpirationTime, permitParkingLotName, permitParkingLotAddress, permitZoneID,
-                newSpaceType);
+        boolean updatePermitSuccess = permit.updatePermitInfo(updatePermitID, scanner);
 
         if (updatePermitSuccess) {
             System.out.println("Permit information updated successfully.");
@@ -882,39 +862,52 @@ public class Main {
         }
     }
 
+//    private static void updateCitationInformation(Citation citation, Scanner scanner) {
+//        System.out.print("Enter Citation Number to Update: ");
+//        String citationNum = scanner.nextLine();
+//
+//        System.out.println("Enter Updated Citation Information:");
+//        System.out.print("New Citation Date: ");
+//        String newCitationDate = scanner.nextLine();
+//        System.out.print("New Citation Time: ");
+//        String newCitationTime = scanner.nextLine();
+//        System.out.print("New Vehicle License Number: ");
+//        String newVehicleLicenseNum = scanner.nextLine();
+//        System.out.print("New Vehicle Model: ");
+//        String newVehicleModel = scanner.nextLine();
+//        System.out.print("New Vehicle Color: ");
+//        String newVehicleColor = scanner.nextLine();
+//        System.out.print("New Parking Lot Name: ");
+//        String newParkingLotName = scanner.nextLine();
+//        System.out.print("New Parking Lot Address: ");
+//        String newParkingLotAddress = scanner.nextLine();
+//        System.out.print("New Category: ");
+//        String newCategory = scanner.nextLine();
+//        System.out.print("New Paid: ");
+//        boolean newPaid = scanner.nextBoolean();
+//        scanner.nextLine(); // Consume the newline character
+//        System.out.print("New Appeal Requested: ");
+//        boolean newAppealRequested = scanner.nextBoolean();
+//        scanner.nextLine(); // Consume the newline character
+//
+//        boolean updateSuccess = citation.updateCitation(
+//                citationNum, newCitationDate, newCitationTime, newVehicleLicenseNum,
+//                newVehicleModel, newVehicleColor, newParkingLotName, newParkingLotAddress, newCategory,
+//                newPaid, newAppealRequested
+//        );
+//
+//        if (updateSuccess) {
+//            System.out.println("Citation information updated successfully.");
+//        } else {
+//            System.out.println("Failed to update citation information.");
+//        }
+//    }
+
     private static void updateCitationInformation(Citation citation, Scanner scanner) {
         System.out.print("Enter Citation Number to Update: ");
         String citationNum = scanner.nextLine();
 
-        System.out.println("Enter Updated Citation Information:");
-        System.out.print("New Citation Date: ");
-        String newCitationDate = scanner.nextLine();
-        System.out.print("New Citation Time: ");
-        String newCitationTime = scanner.nextLine();
-        System.out.print("New Vehicle License Number: ");
-        String newVehicleLicenseNum = scanner.nextLine();
-        System.out.print("New Vehicle Model: ");
-        String newVehicleModel = scanner.nextLine();
-        System.out.print("New Vehicle Color: ");
-        String newVehicleColor = scanner.nextLine();
-        System.out.print("New Parking Lot Name: ");
-        String newParkingLotName = scanner.nextLine();
-        System.out.print("New Parking Lot Address: ");
-        String newParkingLotAddress = scanner.nextLine();
-        System.out.print("New Category: ");
-        String newCategory = scanner.nextLine();
-        System.out.print("New Paid: ");
-        boolean newPaid = scanner.nextBoolean();
-        scanner.nextLine(); // Consume the newline character
-        System.out.print("New Appeal Requested: ");
-        boolean newAppealRequested = scanner.nextBoolean();
-        scanner.nextLine(); // Consume the newline character
-
-        boolean updateSuccess = citation.updateCitation(
-                citationNum, newCitationDate, newCitationTime, newVehicleLicenseNum,
-                newVehicleModel, newVehicleColor, newParkingLotName, newParkingLotAddress, newCategory,
-                newPaid, newAppealRequested
-        );
+        boolean updateSuccess = citation.updateCitation(citationNum, scanner);
 
         if (updateSuccess) {
             System.out.println("Citation information updated successfully.");

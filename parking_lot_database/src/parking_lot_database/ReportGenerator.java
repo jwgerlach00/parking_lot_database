@@ -12,7 +12,7 @@ public class ReportGenerator {
         executeAndPrintQuery(
                 "SELECT parkingLotName, parkingLotAddress, COUNT(*) AS totalNumCitationsAllZones " +
                         "FROM Citations " +
-                        "WHERE citationDate >= ? AND citationDate <= ? " +
+                        "WHERE citationDate > ? AND citationDate < ? " +
                         "GROUP BY parkingLotName, parkingLotAddress;",
                 startDate, endDate);
     }
