@@ -30,39 +30,12 @@ public class Permit {
 		}
 	}
 
-//    public boolean updatePermitInfo(String permitID, String newPermitType, String newStartDate, String newExpirationDate,
-//                                    String newExpirationTime, String parkingLotName, String parkingLotAddress,
-//                                    String zoneID, String newSpaceType) {
-//        try (Connection connection = ParkingLotDB.initializeDatabase()) {
-//            connection.setAutoCommit(false); // Start transaction
-//
-//            boolean result = executeUpdateOperation(
-//                connection,
-//                "UPDATE Permits SET startDate=?, expirationDate=?, expirationTime=?, " +
-//                        "parkingLotName=?, parkingLotAddress=?, zoneID=?, permitType=?, spaceType=? " +
-//                        "WHERE permitID=?",
-//                newStartDate, newExpirationDate, newExpirationTime,
-//                parkingLotName, parkingLotAddress, zoneID, newPermitType, newSpaceType, permitID);
-//
-//            // If successful, commit the transaction
-//            if (result) {
-//                connection.commit();
-//            } else {
-//                connection.rollback(); // Rollback if there is an error
-//            }
-//
-//            return result;
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//            return false;
-//        }
-//    }
 
 	public boolean updatePermitInfo(String permitID, Scanner scanner) {
 		try (Connection connection = ParkingLotDB.initializeDatabase()) {
 			connection.setAutoCommit(false); // Start transaction
 
-// Check if the permitID exists
+			// Check if the permitID exists
 			boolean permitExists = checkPermitExists(connection, permitID);
 
 			if (!permitExists) {

@@ -32,76 +32,7 @@ public class Citation {
 		return executeUpdateOperation("UPDATE Citations SET paid = true WHERE citationNum = ?", citationNum);
 	}
 
-//    public boolean updateCitation(String citationNum, String newCitationDate, String newCitationTime,
-//                                  String newVehicleLicenseNum, String newVehicleModel, String newVehicleColor,
-//                                  String newParkingLotName, String newParkingLotAddress, String newCategory,
-//                                  Boolean newPaid, Boolean newAppealRequested) {
-//        try (Connection connection = ParkingLotDB.initializeDatabase()) {
-//            connection.setAutoCommit(false); // Start transaction
-//
-//            boolean result = executeUpdateOperation(
-//                    connection,
-//                    "UPDATE Citations SET citationDate = ?, citationTime = ?, vehicleLicenseNum = ?, " +
-//                            "vehicleModel = ?, vehicleColor = ?, parkingLotName = ?, parkingLotAddress = ?, " +
-//                            "category = ?, paid = ?, appealRequested = ? WHERE citationNum = ?",
-//                    newCitationDate, newCitationTime, newVehicleLicenseNum,
-//                    newVehicleModel, newVehicleColor, newParkingLotName, newParkingLotAddress,
-//                    newCategory, newPaid, newAppealRequested, citationNum);
-//
-//            // If successful, commit the transaction
-//            if (result) {
-//                connection.commit();
-//            } else {
-//                connection.rollback(); // Rollback if there is an error
-//            }
-//
-//            return result;
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//            return false;
-//        }
-//    }
 
-//	public boolean updateCitation(String citationNum, String newCitationDate, String newCitationTime,
-//			String newVehicleLicenseNum, String newVehicleModel, String newVehicleColor, String newParkingLotName,
-//			String newParkingLotAddress, String newCategory, Boolean newPaid, Boolean newAppealRequested) {
-//		
-//		
-//		try (Connection connection = ParkingLotDB.initializeDatabase()) {
-//			connection.setAutoCommit(false); // Start transaction
-//
-//			// Check if citationNum exists
-//			boolean citationExists = checkCitationExists(connection, citationNum);
-//			
-//			if (!citationExists) {
-//				System.out.println("Citation Number " + citationNum + " does not exist. Update aborted.");
-//				connection.rollback(); // Rollback if permit doesn't exist
-//				return false;
-//			}
-//
-//			boolean result = executeUpdateOperation(connection,
-//					"UPDATE Citations SET citationDate = ?, citationTime = ?, vehicleLicenseNum = ?, "
-//							+ "vehicleModel = ?, vehicleColor = ?, parkingLotName = ?, parkingLotAddress = ?, "
-//							+ "category = ?, paid = ?, appealRequested = ? WHERE citationNum = ?",
-//					newCitationDate, newCitationTime, newVehicleLicenseNum, newVehicleModel, newVehicleColor,
-//					newParkingLotName, newParkingLotAddress, newCategory, newPaid, newAppealRequested, citationNum);
-//			
-//			
-//			
-//				// If successful, commit the transaction
-//				if (result) {
-//					connection.commit();
-//				} else {
-//					connection.rollback(); // Rollback if there is an error
-//				}
-//
-//				return result;
-//			
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//			return false;
-//		}
-//	}
 	
 	public boolean updateCitation(String citationNum, Scanner scanner) {
 	    try (Connection connection = ParkingLotDB.initializeDatabase()) {
